@@ -1,0 +1,39 @@
+\begin{frame}
+\frametitle{Finite Element Discretisations}
+
+Mixed Finite Elements -- Different function spaces for pressure and velocity (to avoid pressure modes of co-located methods)
+
+\pause
+\begin{itemize}[<+->]
+    \item
+           \begin{minipage}[t]{0.65\linewidth}\raggedright
+           RT0 on hexagons (Thuburn) \\
+           (wrong ratio of pressure/velocty dofs $\therefore$ computational modes)
+           \end{minipage}\hfill
+           \begin{minipage}[c]{0.3\linewidth}
+               \includegraphics[scale=0.4]{graphics/RT0hex.pdf}
+           \end{minipage}
+    \item
+          \begin{minipage}[t]{0.65\linewidth}\raggedright
+        RT0 on a cubed sphere (Shipton and Cotter)
+          \end{minipage}\hfill
+          \begin{minipage}[c]{0.3\linewidth}
+              \includegraphics[scale=0.4]{graphics/RT0cube.pdf}
+          \end{minipage}
+    \item
+          \begin{minipage}[t]{0.65\linewidth}\raggedright
+              RT1 on a cubed sphere (Melvin et al)
+          \end{minipage}\hfill
+          \begin{minipage}[c]{0.3\linewidth}
+      \includegraphics[scale=0.2]{graphics/RT1.png}
+          \end{minipage}
+    \item BDFM1 (Cotter)
+\end{itemize}
+\pause
+{\em But} the correct pressure/velocity dof ratio is a necessary but {\em not sufficient} to avoid spurious computational modes.
+\end{frame}
+
+\begin{frame}
+\includegraphics[width=\linewidth]{graphics/ColinGrids.pdf}
+\end{frame}
+

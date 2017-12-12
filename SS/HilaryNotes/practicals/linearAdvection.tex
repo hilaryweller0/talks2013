@@ -1,0 +1,79 @@
+\subsection{Practical: Linear Advection}
+
+Write your answers on this piece of paper.
+
+In the subdirectory \url{pythonExamples/advection} you will find code for solving the linear advection equation:
+\begin{equation*}
+\frac{\partial\phi}{\partial t} + u\frac{\partial\phi}{\partial x} = 0
+\end{equation*}
+with cyclic boundaries conditions. The code is organised as:\\
+\begin{tabular}{ll}
+\url{linearAdvect.py} & outer code to define input variables, call linear\\
+                      & advection functions and plot the results \\
+\url{initialConditions.py} & code to generate the initial conditions \\
+\url{advectionSchemes.py} & Code defining CTCS and FTBS schemes. \\
+                          & This is where you should add code for other schemes.
+\end{tabular}
+
+The following setup variables are defined in the outer code:\\
+\begin{tabular}{lcl}
+Start location & $x_{\min}$ & 0\\
+End location & $x_{\max}$ & 1m\\
+Number of points & $n_x$ & 100\\
+Spatial step & $\Delta x$ & $(x_{\max} - x_{\min})/n_x$ \\
+Courant number & $c$ & 0.2 \\
+Wind speed & $u$ & 1m/s\\
+Time step & $\Delta t$ & $c ~ \Delta x/u$ \\
+Number of time steps & $n_t$ & 50\\
+\end{tabular}
+
+\begin{enumerate}
+\item Run the code and identify the diffusion errors and dispersion errors of the two schemes.
+\\ \optparagraph{
+FTBS suffers from diffusion errors\\
+CTCS suffers from dispersion errors
+}
+
+%\clearpage
+\item Some error norms of numerical results are defined as:\\
+\begin{tabular}{ccc}
+$\ell_1(\phi(x)) = \frac{\int_x |\phi - \phi_t| dx}{\int_x |\phi_t| dx}$
+&
+$\ell_2(\phi(x)) = \sqrt{\frac{\int_x (\phi - \phi_t)^2dx}{\int_x \phi_t^2dx}}$
+&
+$\ell_\infty(\phi(x)) = \frac{\max|\phi - \phi_t|}{\max|\phi_t|}$
+\end{tabular}\\
+for a numerical solution, $\phi(x)$, in comparison to the exact solution, $\phi_t$. The code in \url{linearAdvect.py} calculates these error norms as well as the mean and standard deviation of the initial and final solutions. For different resolutions (change $n_x$ and change $n_t$ so as to get the same end time) fill in the table for the error norms from each scheme.
+
+\hspace{-1cm}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+$n_x$ & \multicolumn{2}{c|}{Initial} & \multicolumn{4}{c|}{FTBS} & \multicolumn{4}{c|}{CTCS} \\
+ & mean & std. dev & mean & std. dev & $\ell_2$ & $\ell_\infty$ & mean & std. dev & $\ell_2$ & $\ell_\infty$ \\
+\hline
+50 & \opttext{0.384} & \opttext{0.401} & \opttext{0.384} & \opttext{0.341} & \opttext{0.023} & \opttext{0.283} & \opttext{0.384} & \opttext{0.401} & \opttext{0.011} & \opttext{0.219}\\
+\hline
+100 & \opttext{0.379} & \opttext{0.400} & \opttext{0.379} & \opttext{0.367} & \opttext{0.009} & \opttext{0.219} & \opttext{0.379} & \opttext{0.400} & \opttext{0.002} & \opttext{0.087}\\
+\hline
+200 & \opttext{0.378} & \opttext{0.399} & \opttext{0.377} & \opttext{0.382} & \opttext{\footnotesize 0.0033} & \opttext{0.159} & \opttext{0.378} & \opttext{0.400} & \opttext{\footnotesize 0.00056} & \opttext{0.071} \\
+\hline
+\end{tabular}
+
+\begin{enumerate}
+\item Which of the schemes conserves the total quantity of mass?
+\item Which of the schemes conserves the variance of the tracer?
+\item Calculate the order of accuracy of the schemes based on the $\ell_2$ and $\ell_\infty$ norms. Are they as expected?
+\end{enumerate}
+
+\item Change the Courant number to 1.1 and run for 10 time-steps. What is happening to the solution? What is happening if you run for longer? Does the same problem occur for a Courant number of 1? What about a Courant number of -0.2? (What would this imply?)  Does the same problem occur if you remove the sharp profile from the initial conditions?
+\\ \optparagraph{
+The solution is diverging. It is not stable. \\
+If you run for longer the solution will become infinite\\
+For a Courant number less than or equal to 1 the solution is stable. \\
+For a Courant number of less than zero, FTBS is not stable. This implies wind in the opposite direction\\
+The same problems occur for just the smooth profile, but the instabilities do not occur so quickly.
+}
+\item Write down and implement one of the linear advection schemes CTBS (centred in time, backward in space) and FTCS (forward in time, centred in space). Can you find a Courant number for which these schemes are stable?
+\\ \optparagraph{FTCS and CTBS are unstable for all Courant numbers}
+\end{enumerate}
+

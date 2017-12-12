@@ -1,0 +1,116 @@
+\chapter{Linear Advection}
+\label{chap:advect}
+
+The concentration of a constituent of the atmosphere is denoted $\phi$. If this constituent is moved around by the wind with velocity $\vec{u}$, but there is no diffusion and no sources or sinks of the constituent, then the concentration at time $t$ and at location $(x,y,z)$ is governed by the linear advection equation:
+\begin{equation}
+\frac{D\phi}{Dt} = \frac{\partial\phi}{\partial t} + \vec{u}\dprod\nabla\phi = 0
+\label{eqn:3dAdvect}
+\end{equation}
+where $\vec{u}=(u,v,w)$ and $\nabla\phi=\bigl(\frac{\partial\phi}{\partial x},\frac{\partial\phi}{\partial y},\frac{\partial\phi}{\partial z}\bigr)$.  Changes in $\phi$ are produced by the component of the wind in the same direction as gradients of $\phi$. In order to understand why the $\vec{u}\dprod\nabla(\phi)$ term leads to changes in $\phi$, consider a region of polluted atmosphere where the pollutant has concentration contours as shown below:
+
+\begin{minipage}{0.5\linewidth} \vspace{1cm}
+\includegraphics[width=\linewidth]{figs/contours.pdf}
+\end{minipage}
+\hfill
+\begin{minipage}{0.43\linewidth}
+\subsubsubheading{Exercise:}
+Draw on the figure the directions of the gradients of $\phi$ and thus mark with a $+$, $-$ or $0$ locations where $\vec{u}\dprod\nabla\phi$ is positive, negative and zero. Thus deduce where $\phi$ is increasing, decreasing or staying the same based on equation \ref{eqn:3dAdvect}. Hence overlay contours of $\phi$ at a later time.
+\end{minipage}
+
+\clearpage
+In one spatial dimension, $x$, with constant wind, $u$, equation \ref{eqn:3dAdvect} reduces to:
+\begin{equation}
+\frac{\partial\phi}{\partial t} + \opttext{u\frac{\partial\phi}{\partial x}=0}
+\label{eqn:1dAdvect}
+\end{equation}
+This equation has an analytic solution. If the initial condition is $\phi(x,0)$ then the solution at time $t$ is $\phi(x,t) = \phi(x-ut,0)$. 
+
+\subsubsubheading{Exercise:} Check that this is the analytic solution.\\
+(Hint: define $X=x-ut$ and calculate $\frac{\partial X}{\partial x}$ and $\frac{\partial X}{\partial t}$)\\
+\optparagraph{
+$\frac{\partial X}{\partial x}=1$ and $\frac{\partial X}{\partial t}=-u$\\
+$\implies \frac{\partial \phi}{\partial x}=\frac{\partial \phi}{\partial X}\frac{\partial X}{\partial x} = \frac{\partial \phi}{\partial X}$ and 
+$\frac{\partial \phi}{\partial t}=\frac{\partial \phi}{\partial X}\frac{\partial X}{\partial t} = -u\frac{\partial \phi}{\partial X}$\\
+$\implies \frac{\partial \phi}{\partial t} + u \frac{\partial \phi}{\partial x} = -u\frac{\partial \phi}{\partial X} + u\frac{\partial \phi}{\partial X} = 0$
+}\ \\
+
+\begin{minipage}{\linewidth}
+\subsubsubheading{Example:} The initial conditions are shown below and the wind speed is 1m/s to the right. Sketch the solution after 3 seconds\\
+\includegraphics[scale=0.4]{figs/initialProfile.pdf}
+\end{minipage}
+
+\subsubsubheading{Question:} Is the linear advection equation elliptic, parabolic or hyperbolic? \opttext{hyperbolic}
+
+\section{Eulerian Finite Difference Schemes for Linear Advection}
+
+\subsection{Forward in Time, Backward in Space (FTBS)}
+
+To solve $\frac{\partial\phi}{\partial t} + u\frac{\partial\phi}{\partial x}=0$ numerically, divide space into $N$ equal intervals of size $\Delta x$ so that $x_j=j\Delta x,~j=0,1,2,...,N$. Divide time into time steps $\Delta t$ so that $t_n=n\Delta t,~n=0,1,2,...$. Define $\phi_j^n=\phi(x_j,t_n)$. The forward in time, backward in space scheme is:
+\begin{equation}
+\text{FTBS:}~~~~~~~~~~~~\frac{\phi^{(n+1)}_j - \phi^{(n)}_j}{\Delta t}  +u\frac{\phi^{(n)}_j - \phi^{(n)}_{j-1}}{\Delta x} = 0
+\label{eqn:FTBS}
+\end{equation}
+This can be re-arranged to get $\phi^{(n+1)}_j$ on the LHS and all other terms on the RHS so that we can calculate $\phi$ at the new time step at all locations based on values at previous time steps. Also in this equation, remove $u$, $\Delta t$ and $\Delta x$ by substituting in the Courant number, $c=\frac{u\Delta t}{\Delta x}$:
+\begin{equation}
+\phi^{(n+1)}_j = \opttext{
+\phi^{(n)}_j -c\bigl(\phi^{(n)}_j - \phi^{(n)}_{j-1}\bigr)
+}
+\end{equation}
+
+%\vskip 0.54cm
+\begin{minipage}{0.48\linewidth}
+Advection of an initial profile once around the domain (cyclic boundaries, $c=0.2$, 100 space intervals, 500 time steps).\\
+\subsubsubheading{Question} Why is it so inaccurate?\\
+\opttext{First-order accurate in space and time.}
+\subsubsubheading{Question} Why is it so diffusive?\\
+
+\end{minipage}\hfill
+\begin{minipage}{0.5\linewidth}
+\animategraphics[width=\linewidth,controls]{5}
+{/home/hilary/latex/teaching/MTMW12/2012Notes/notes/anims/FTBS/FTBS_}{0}{49}
+\end{minipage}
+\opttext{The first term omitted from the Taylor series for the  backward in space approximation for $\partial\phi/\partial x$ looks like a diffusion term.}
+
+\clearpage
+\subsection{Centred in Time, Centred in Space (CTCS)}
+
+\begin{equation}
+\text{CTCS:}~~~~~~~~~~~~\frac{\phi^{(n+1)}_j - \phi^{(n-1)}_j}{2\Delta t}  +u\frac{\phi^{(n)}_{j+1} - \phi^{(n)}_{j-1}}{2\Delta x} = 0
+\label{eqn:CTCS}
+\end{equation}
+\subsubsubheading{Exercise:} Re-arrange to get $\phi^{(n+1)}_j$ on the LHS and all other terms on the RHS. Also remove $u$, $\Delta t$ and $\Delta x$ by substituting in the Courant number, $c=\frac{u\Delta t}{\Delta x}$:
+\begin{equation}
+\phi^{(n+1)}_j = \opttext{
+\phi_j^{(n-1)} - c\bigl(\phi^{(n)}_{j-1} - \phi^{(n)}_{j-1}\bigr)
+}
+\end{equation}
+This is a three-time-level formula (it involves values of $\phi$ at times $t_{n-1}$, $t_n$ and $t_{n+1}$. To start the simulation, values of $\phi$ are needed at times $t_0$ and $t_1$. However, only $\phi(x,t_0)$ is available. So another scheme (such as FTCS) must be used to obtain $\phi(x,t_1)$:
+\begin{equation}
+\text{FTCS:~~~}\opttext{
+\phi^{(n+1)}_j = \phi_j^{(n)} - \frac{c}{2}\bigl(\phi^{(n)}_{j-1} - \phi^{(n)}_{j-1}\bigr)
+}
+\label{eqn:FTCS}
+\end{equation}
+
+\begin{itemize}
+\item The two-point, centred difference in space gradient is 2nd order accurate.
+\item The centred in time or leap-frog scheme is second-order accurate.
+\item So CTCS is also second-order accurate.
+\item But is it stable?
+\item Does it suffer from a computational modes or dispersion errors?
+\end{itemize}
+
+\clearpage
+\subsubheading{CTCS or FTBS?}
+
+Advection of an initial profile once around the domain (cyclic boundaries, c = 0.2, 100 space intervals, 500 time steps).
+
+\animategraphics[width=\linewidth,controls]{5}
+{/home/hilary/latex/teaching/MTMW12/2012Notes/notes/anims/FTBS_CTCS/FTBS_CTCS_}{0}{49}
+
+\begin{itemize}
+\item CTCS appears to be stable
+\item CTCS is not diffusive
+\item CTCS suffers from {\it dispersion errors} -- short wavelength waves propagate too slowly
+\end{itemize}
+

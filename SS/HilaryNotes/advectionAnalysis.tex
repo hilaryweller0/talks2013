@@ -1,0 +1,140 @@
+\chapter{Numerical Analysis of Advection Schemes}
+\label{chap:advectionAnalysis}
+
+\section{Von-Neumann Stability Analysis}
+
+Von Neumann stability analysis gives us an equation for the amplification factor, $A$, of a numerical scheme for solving an equation which tells us the following about the scheme:\\
+{\renewcommand{\arraystretch}{1.1}\begin{tabular}{ll}
+$|A|<1$ & stable and damping\\
+$|A|=1$ & neutrally stable \\
+$|A|>1$ & unstable (amplifying)\\
+\end{tabular}
+
+The scheme is:
+
+\begin{tabular}{ll}
+conditionally stable & if stable only for sufficiently small time step\\
+unconditionally stable & if stable for all time steps\\
+unconditionally unstable & if unstable for all time steps\\
+\end{tabular}
+
+In general, $A$ depends on the time step and on the resolution of the  wavenumbers of the solution. We know that the solution, $\phi$, can be represented as an infinite Fourier series
+\begin{equation}
+\phi = \sum_{k=-\infty}^{\infty} A_k e^{ikx}.
+\end{equation}
+where $A_k$ are the \opttext{Fourier coefficients} and $k$ are the \opttext{wavenumbers}.
+
+Linear advection will advect each of the Fourier modes independently and any {\it linear} scheme for linear advection such as FTBS or CTCS will also advect each of the Fourier modes independently. So we should find how a scheme treats one mode, $e^{ikx}$. So assume that $\phi_j^{(n)}=e^{ikj\Delta x}$ (since at position $j$, $x=j\Delta x$) and find the amplification factor $A$ such that:
+\begin{equation}
+\phi_j^{(n+1)} = A \phi_j^{(n)}
+\end{equation}
+
+
+\section{Von-Neumann Stability Analysis of FTBS}
+
+FTBS for linear advection is:
+\begin{equation}
+\phi^{(n+1)}_j = \phi^{(n)}_j -c\bigl(\phi^{(n)}_j - \phi^{(n)}_{j-1}\bigr)
+\end{equation}
+Substitute in $\phi_j^{(n)}=e^{ikj\Delta x}$ and $\phi_j^{(n+1)} = A \phi_j^{(n)}$:
+
+\begin{equation}\opttext{
+Ae^{ikj\Delta x} = e^{ikj\Delta x} - c(e^{ikj\Delta x} - e^{ik(j-1)\Delta x})}
+\end{equation}
+Cancel powers of $e^{ikj\Delta x}$ and rearrange to find $A$ in terms of $c$ and $k\Delta x$:
+\begin{equation}\opttext{
+A = 1 - c(1 - e^{-ik\Delta x})}
+\end{equation}
+We need to find the magnitude of $A$ so we need to write it down in real and imaginary form. So substitute $e^{-ik\Delta x} = \cos k\Delta x - i\sin k\Delta x$:
+\begin{equation}\opttext{
+A = 1 - c(1-\cos k\Delta x) - ic\sin k\Delta x}
+\end{equation}
+and calculate $|A|^2=AA^*$ ($A$ multiplied by its complex conjugate):
+
+
+For what values of $\Delta t$ is $|A|\le 1$? \\ \ \\
+Remember that $A$ is complex and multiply by its complex conjugate, $A^*$:
+%\vspace{0.5cm}
+\begin{align*}
+&|A|^2 = 1 - 2c(1-\cos k\Delta x) + c^2(1-2\cos k\Delta x + \cos^2 k\Delta x) + c^2 \sin^2 k\Delta x\\ %&\\
+&\implies |A|^2 = 1 -2c(1-c)(1-\cos k\Delta x)
+\end{align*}
+We need to find for what value of $c$ is $|A|\le 1$ in order to find when FTBS is stable. 
+
+\clearpage
+\begin{minipage}{0.58\linewidth} \raggedright
+For FTBS, \\
+$|A|^2 = 1 -2c(1-c)(1-\cos k\Delta x)$
+
+FTBS will be most unstable when $|A|$ is maximised. This occurs when $\cos k\Delta x=-1$. Ie when $k\Delta x=\pm\pi$.\\
+So FTBS is stable when:\\
+\begin{center}
+$1 -4c(1-c)\le 1$
+\end{center}
+
+\hfill
+$|A|^2$ for FTBS for $k\Delta x=\pi$ $\rightarrow$
+\end{minipage}
+\begin{minipage}{0.4\linewidth}
+\includegraphics[width=\linewidth]{pythonWork/stabAnal/FTBSA.pdf}
+\end{minipage}
+
+So FTBS is unstable if $u<0$ or if $\frac{u\Delta t}{\Delta x}>1$. We will now define:\\
+\begin{tabular}{lll}
+\bf Upstream scheme & FTBS & when $u\ge 0$\\
+                & FTFS & when $u< 0$ \\
+\end{tabular}
+
+{\bf The upstream scheme is first order accurate in space and time and conditionally stable}
+
+\subsection{What should $|A|$ be for real linear advection?}
+\label{secn:AforRealAdvection}
+
+For initial conditions consisting of a single Fourier mode:
+\begin{equation*}
+\phi(x,0) = A_k e^{ikx}
+\end{equation*}
+The solution at time $t$ is: \vspace{-0.4cm}
+\begin{equation*}
+\phi(x,t) = \opttext{A_k e^{ik(x-ut)}.}
+\end{equation*}
+This can be represented as a factor times $e^{ikx}$:
+\begin{equation*}
+\phi(x,t) = A_k e^{-ikut} e^{ikx}
+\end{equation*}
+So if $t=n\Delta t$ we have $A^n = e^{-ikut} = e^{-ikun\Delta t}$. Therefore $A=e^{-iku\Delta t}$ which has $|A|=1$.
+}
+
+{\bf The upstream scheme is damping (diffusive) because, in the stable range, $|A|<1$.}
+
+\clearpage
+\section{Von Neumann Stability Analysis of CTCS}
+
+The amplification factor, $A$, can also be found by substituting $\phi^{(n)}_j = A^n e^{ikj\Delta x}$ into the equation for the numerical scheme. So for CTCS:
+\begin{equation}
+\phi^{(n+1)}_j = 
+\phi_j^{(n-1)} - c\bigl(\phi^{(n)}_{j-1} - \phi^{(n)}_{j-1}\bigr)
+\end{equation}
+we get:
+\begin{align*}
+&\opttext{A^{n+1}e^{ikj\Delta x} - A^{n-1}e^{ikj\Delta x} + c(A^{n}e^{ik(j+1)\Delta x} - A^{n}e^{ik(j-1)\Delta x}) = 0} \\
+\opttext{\implies}&\opttext{A^2 + (2ic\sin k\Delta x) A - 1 = 0}\\
+\implies&A=\opttext{-ic\sin k\Delta x \pm \sqrt{1-c^2 \sin^2 k\Delta x}}
+\end{align*}
+
+No point in considering $k\Delta x=\pm\pi$ because trivially $A=\pm 1$. Instead consider $k\Delta x=\pi/2$:
+
+\begin{minipage}{0.4\linewidth}
+\includegraphics[width=\linewidth]{pythonWork/stabAnal/CTCSA.pdf}
+\end{minipage}
+\begin{minipage}{0.58\linewidth}
+\begin{itemize}\raggedright
+\item There are two roots, a physical mode and a spurious computational mode
+\item There is a computational mode because of the three time-levels used to represent a first order equation
+\item CTCS is neutrally stable for $|c|\le 1$. This is really good!
+\item CTCS is unstable for $|c|>1$.
+\item The neutral stability means that waves of any wavelength do not amplify or decay. So CTCS is not diffusive.
+\item However short waves propagate too slowly. This leads to dispersion errors
+\end{itemize}
+\end{minipage}
+

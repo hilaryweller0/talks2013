@@ -1,0 +1,101 @@
+\begin{slide}
+\heading{Multi-resolution with TRiSK \normalfont\normalsize (with Sean Cavany)}
+
+\begin{minipage}{0.6\linewidth}\raggedright
+\begin{list0}
+\item Problem: TRiSK requires a nearly regular mesh to achieve $\sim 2^\text{nd}$ order accuracy
+\item So Ringler et al use Lloyd's algorithm to generate multi-resolution meshes
+    \begin{list1}
+    \item Lloyds algorithm is extremely expensive
+    \item The resolution is not very flexible
+    \end{list1}
+\item Alternative: add and remove points and then apply a smoother
+    \begin{list1}
+    \item The meshes are less uniform
+    \item The errors are higher?
+    \end{list1}
+\end{list0}
+\end{minipage}
+\hfill
+\begin{minipage}{0.38\linewidth}
+\includegraphics[width=\linewidth]{graphics/LloydMesh.png}\\
+\small from Ringler et al, MWR, 2011
+\end{minipage}
+
+\vspace{0.5cm}
+\begin{list0}
+\item Alternative: solve Monge-Ampere equation to make the mesh conform to a monitor function 
+    \begin{list1}
+    \item Inexpensive
+    \item The mesh is deformed rather than enhanced so not so flexible
+    \end{list1}
+\end{list0}
+
+\end{slide}
+
+\begin{slide}
+\heading{Mesh requirements for accuracy}
+
+The Voronoi and Delaunay grids should nearly bisect each other
+
+\begin{tabular}{cc}
+\includegraphics[width=0.49\linewidth]
+{links/meshes+sphereMeshes+HRbucky+4+constant+meshUnder.pdf}
+&
+\includegraphics[width=0.49\linewidth]
+{links/meshes+sphereMeshes+localRef+3+constant+mesh1.pdf}
+\end{tabular}
+
+\end{slide}
+
+\begin{slide}
+\heading{Improving Voronoi meshes}
+
+\begin{minipage}[t]{0.32\linewidth}\centering
+Add points along triangle edges where needed for resolution
+
+\includegraphics[width=\linewidth]
+{links/meshes+sphereMeshes+localRef+3+constant+mesh1.pdf}
+
+$\rightarrow$ non-crossing edges\pauseHS
+\end{minipage}
+%
+\begin{minipage}[t]{0.32\linewidth}\centering
+Smooth the mesh using Lloyds Algorithm (only a few iterations)
+
+\includegraphics[width=\linewidth]
+{links/meshes+sphereMeshes+localRef+3+constant+mesh2.pdf}
+
+Guaranteed to improve edge crossing\pauseHS
+\end{minipage}
+%
+\begin{minipage}[t]{0.32\linewidth}\centering
+Fix some non-crossing edges
+
+\ \\
+\includegraphics[width=\linewidth]
+{links/meshes+sphereMeshes+localRef+3+constant+mesh3.pdf}
+
+Seems to work ...\pauseHS
+\end{minipage}
+
+\ \\
+This is cheap and flexible. How does it affect solution accuracy ...
+
+\end{slide}
+
+\begin{slide}
+\subheading{Errors after 15 days for the shallow water flow}
+\subheading{over a mid-latitude mountain}
+
+\begin{tabular}{cc}
+\multicolumn{2}{c}{4$\times$ resolution of the mountain}\\
+2,562 cells, Lloyd's algorithm&
+1,912 cells, Weller, Cavany mesh\\
+\includegraphics[angle=270,width=0.49\linewidth]{graphics/hDiffRingler.png}
+&
+\includegraphics[angle=270,width=0.49\linewidth]{graphics/hDiffAdded.png}
+\end{tabular}
+
+\end{slide}
+

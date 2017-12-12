@@ -1,0 +1,45 @@
+\subsection{Practical: Diffusion}
+
+\begin{enumerate}
+\item Write a code to solve the diffusion equation using FTCS and the following parameters
+
+\begin{tabular}{lll}
+$x_{\min}$ & 0.0 & limits of the geometry\\
+$x_{\max}$ & 1.0 & \\
+$n_x$ & 100 & number of spatial points \\
+$n_t$ & 50 & number of time-steps \\
+$K$ & 1.0 & diffusion coefficient \\
+$\Delta t$ & $2\times 10^5$ & Time step \\
+\end{tabular}
+
+Starting from the initial conditions:
+\begin{equation*}
+\phi_0(x) = \begin{cases}
+1 & 0.25<x<0.75 \\
+0 & \text{ otherwise}
+\end{cases}
+\end{equation*}
+And subject to boundary conditions $\phi(0)=\phi(1)=0$ for all time. Experiment to see what happens when the time-step is increased above the stability limit.
+
+\item BTCS is solved by formulating an $N\times N$ matrix to solve where $N$ is the number of grid-points. Write out BTCS as an $N\times N$ matrix equation for the vector of all $\phi_j^{(n+1)}$s in terms of all of the $\phi_j^{(n)}$s. 
+
+\item Matrices can be initialised in python by using:
+\begin{lstlisting}
+M = pylab.zeros([N,N])
+\end{lstlisting}
+and matrix equations can be solved by importing the following libraries:
+\begin{lstlisting}
+import scipy as Sci
+import scipy.linalg
+\end{lstlisting}
+Then the solution of $Mx=y$ is
+\begin{lstlisting}
+x = scipy.linalg.solve(M,y)
+\end{lstlisting}
+Use this to implement BTCS for solving the diffusion equation. How do the answers compare with FTCS when the time-step is below the stability limit. What happens when you increase the time-step?
+
+\end{enumerate}
+
+\subsection{Lessons from the practical}
+
+

@@ -1,0 +1,12 @@
+numpy
+pylab
+matplotlib
+math
+os
+
+sudo apt-get install python-scipy
+
+from numpy import *
+import scipy as Sci
+import scipy.linalg
+

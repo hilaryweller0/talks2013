@@ -1,0 +1,25 @@
+\begin{picture}(0,0)%
+\includegraphics{figs/LW.pdf}%
+\end{picture}%
+\setlength{\unitlength}{3108sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(3624,2035)(1339,-1970)
+\put(2026,-826){\makebox(0,0)[lb]{\smash{{\SetFigFont{9}{10.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$\phi_j$}%
+}}}}
+\put(4276,-106){\makebox(0,0)[lb]{\smash{{\SetFigFont{9}{10.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$\phi_{j+1}$}%
+}}}}
+\put(2251,-1636){\makebox(0,0)[lb]{\smash{{\SetFigFont{9}{10.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$x_j$}%
+}}}}
+\put(3106,-1591){\makebox(0,0)[lb]{\smash{{\SetFigFont{9}{10.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$x_{j+^1/_2}$}%
+}}}}
+\put(3871,-1591){\makebox(0,0)[lb]{\smash{{\SetFigFont{9}{10.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$x_{j+1}$}%
+}}}}
+\put(2836,-1906){\makebox(0,0)[lb]{\smash{{\SetFigFont{9}{10.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$u\Delta t$}%
+}}}}
+\end{picture}%

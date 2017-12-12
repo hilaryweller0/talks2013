@@ -1,0 +1,57 @@
+% Package to provide \opttext{text} and \optparagraph{text} commands
+% that display the text in red, but if \studentversion is called at
+% the start of the document then a gap the same size as the text will
+% be left instead. The first is for short expanses of text (e.g. table
+% entries) while the second is for paragraphs (including
+% equations). Unfortunately it is not possible to have paragraph
+% breaks in "text"; you need to call \optparagraph twice.
+\usepackage{ifthen}
+\usepackage{color}
+
+\newboolean{@studentversion}\setboolean{@studentversion}{false}
+
+% Command to turn on the student version of the document
+\newcommand{\studentversion}{\setboolean{@studentversion}{true}}
+\studentversion
+
+% Latex puts the text too close to the preceding and following
+% paragraph for some reason, so add some white space
+\newlength{\@beforelecturerskip}
+\newlength{\@afterlecturerskip}
+\setlength{\@beforelecturerskip}{-3pt}
+\setlength{\@afterlecturerskip}{-3pt}
+
+% The \optparagraph command
+\newcommand{\optparagraph}[1]{%
+  \ifthenelse{\boolean{@studentversion}}{%
+    % We are in the student version so use the \phantom command to
+    % leave a gap.  Note the paragraph spaces!
+    \vskip\@beforelecturerskip%
+
+    \noindent\phantom{\parbox{\columnwidth}{#1}}%
+
+    \vskip\@afterlecturerskip%
+  }{% We are in the non-student version so display the text in red
+    {\color{red}%
+      \vskip\@beforelecturerskip%
+
+      \noindent\parbox{\linewidth}{#1}%
+
+      \vskip\@afterlecturerskip%
+    }%
+  }%
+}
+
+% The \opttext command
+\newcommand{\opttext}[1]{%
+  \ifthenelse{\boolean{@studentversion}}{%
+    % We are in the student version so use the \phantom command to
+    % leave a gap.  Note the paragraph spaces!
+    \phantom{#1}%
+  }{% We are in the non-student version so display the text in red
+    {\color{red}%
+      #1%
+    }%
+  }%
+}
+

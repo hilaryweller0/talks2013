@@ -1,0 +1,777 @@
+#LyX file created by tex2lyx 2.0.8.1
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options false
+\language english
+\language_package none
+\inputencoding auto
+\fontencoding default
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\paperfontsize default
+\spacing single
+\use_hyperref 0
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 0
+\use_mathdots 0
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+
+
+\begin_inset Newpage clearpage
+\end_inset
+
+. 
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\series bold
+
+\size large
+Using the Computers for the Practicals
+\family default
+\series default
+\shape default
+
+\end_layout
+
+\begin_layout Enumerate
+
+For each practical, make a new directory in your home directory, or a sub-directory in your home directory, eg:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+
+
+\family typewriter
+mkdir prac1_linearAdvection
+\family default
+\series default
+\shape default
+
+\end_layout
+
+\begin_layout Standard
+
+
+\family typewriter
+cd prac1_linearAdvection
+\family default
+\series default
+\shape default
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+Copy the appropriate files from
+\begin_inset Newline newline
+\end_inset
+
+ 
+\family typewriter
+/usr/local/atmos/CMSS2013_numerics/pythonExamples
+\family default
+\series default
+\shape default
+. For example, to copy the whole 
+\family typewriter
+advection
+\family default
+\series default
+\shape default
+ directory:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+
+
+\family typewriter
+cp -r /usr/local/atmos/CMSS2013_numerics/pythonExamples/advection 
+\begin_inset Formula $\sim$
+\end_inset
+
+/prac1_linearAdvection
+\family default
+\series default
+\shape default
+
+\end_layout
+
+\begin_layout Standard
+
+(
+\begin_inset Formula $\sim$
+\end_inset
+
+ is a shortcut for your home directory)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+Go to this directory, make a copy of the file that you want to edit and edit it using 
+\family typewriter
+gedit
+\family default
+\series default
+\shape default
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+
+
+\family typewriter
+cd advection
+\family default
+\series default
+\shape default
+
+\end_layout
+
+\begin_layout Standard
+
+
+\family typewriter
+ls
+\family default
+\series default
+\shape default
+
+\end_layout
+
+\begin_layout Standard
+
+
+\family typewriter
+cp linearAdvect.py linearAdvect_HW.py
+\family default
+\series default
+\shape default
+ 
+\begin_inset space \hfill{}
+
+\end_inset
+
+(HW are my initials)
+\end_layout
+
+\begin_layout Standard
+
+
+\family typewriter
+gedit linearAdvect_HW.py &
+\family default
+\series default
+\shape default
+
+\end_layout
+
+\begin_layout Standard
+
+(The 
+\family typewriter
+&
+\family default
+\series default
+\shape default
+ makes the command run in the background)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+
+\series bold
+Very important: tabs versus spaces.
+\family default
+\series default
+\shape default
+ If you mix tabs and spaces in python, it will behave in unexpected ways. The python code that I am giving you has spaces not tabs. So you must setup gedit to put in 4 spaces instead of a tab. In 
+\family typewriter
+gedit
+\family default
+\series default
+\shape default
+ go to 
+\family typewriter
+Edit -> Preferences -> Editor
+\family default
+\series default
+\shape default
+ and choose 
+\family typewriter
+Insert spaces instead of tabs
+\family default
+\series default
+\shape default
+ and set the tab width to 4. You can also enable automatic indentation.
+\end_layout
+
+\begin_layout Enumerate
+
+The python scripts that I am giving you are heavily commented so that you can pick up the syntax from the script. So have a good look at them before making any changes.
+\end_layout
+
+\begin_layout Enumerate
+
+Once you have made and saved your changes you can start python and run your script:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+
+
+\family typewriter
+python
+\family default
+\series default
+\shape default
+
+\end_layout
+
+\begin_layout Standard
+
+and in python:
+\end_layout
+
+\begin_layout Standard
+
+
+\family typewriter
+execfile("linearAdvect_HW.py")
+\family default
+\series default
+\shape default
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+In python, after a graph has been opened in a new window, you must close that window before the script will continue
+\end_layout
+
+\begin_layout Enumerate
+
+To leave python, type 
+\family typewriter
+exit()
+\family default
+\series default
+\shape default
+
+\end_layout
+
+\begin_layout Enumerate
+
+Some essential unix commands:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+
+
+\begin_inset Tabular 
+<lyxtabular version="3" rows="12" columns="2">
+<features tabularvalignment="middle" tabularwidth="0pt">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\family typewriter
+mkdir dirName
+\family default
+\series default
+\shape default
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Make directory named 
+\begin_inset Quotes eld
+\end_inset
+
+dirName
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\family typewriter
+cd dirName
+\family default
+\series default
+\shape default
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Change directory to directory named 
+\begin_inset Quotes eld
+\end_inset
+
+dirName
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\family typewriter
+cp file1 file2
+\family default
+\series default
+\shape default
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Copy file named 
+\begin_inset Quotes eld
+\end_inset
+
+file1
+\begin_inset Quotes erd
+\end_inset
+
+ to location 
+\begin_inset Quotes eld
+\end_inset
+
+file2
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\family typewriter
+cp -r dir1 dir2
+\family default
+\series default
+\shape default
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Copy the entire directory 
+\begin_inset Quotes eld
+\end_inset
+
+dir1
+\begin_inset Quotes erd
+\end_inset
+
+ to location 
+\begin_inset Quotes eld
+\end_inset
+
+dir2
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\family typewriter
+ls
+\family default
+\series default
+\shape default
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+List contents of the current directory 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\family typewriter
+pwd
+\family default
+\series default
+\shape default
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Print working directory 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\family typewriter
+mv file1 file2
+\family default
+\series default
+\shape default
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Move file (or directory) 
+\begin_inset Quotes eld
+\end_inset
+
+file1
+\begin_inset Quotes erd
+\end_inset
+
+ to file or directory named 
+\begin_inset Quotes eld
+\end_inset
+
+file2
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\family typewriter
+rm file1
+\family default
+\series default
+\shape default
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Remove (delete) 
+\begin_inset Quotes eld
+\end_inset
+
+file1
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\family typewriter
+rm -r dir1
+\family default
+\series default
+\shape default
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Remove (delete) directory structure 
+\begin_inset Quotes eld
+\end_inset
+
+dir1
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\family typewriter
+man command
+\family default
+\series default
+\shape default
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Print the manual page for 
+\begin_inset Quotes eld
+\end_inset
+
+command
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\family typewriter
+more file1
+\family default
+\series default
+\shape default
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Write out the contents of 
+\begin_inset Quotes eld
+\end_inset
+
+file1
+\begin_inset Quotes erd
+\end_inset
+
+ one page at a time
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+(get another page by pressing space) 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+You can use 
+\family typewriter
+okular
+\family default
+\series default
+\shape default
+ to view pdf files. Eg:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+
+
+\family typewriter
+okular Weller_ClimSS_lec.pdf &
+\family default
+\series default
+\shape default
+
+\end_layout
+
+\end_deeper
+\end_body
+\end_document

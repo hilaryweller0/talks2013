@@ -1,0 +1,84 @@
+\makeatletter
+
+%\documentclass[mathserif,serif]{beamer}
+\documentclass[mathserif,serif,handout]{beamer}
+    
+
+\usepackage{color, rotating, times, amssymb, amsmath, mathtools, graphicx, subfigure, tabularx, lscape, multirow, natbib, wasysym, array, hyperref,fancybox,animate}
+
+% line spacing
+%\usepackage{setspace}
+%\singlespacing
+%\LogoOff
+
+% tabular customisation
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{K}{>{\centering\arraybackslash}p}
+%\renewcommand{\tabularxcolumn}[1]{>{}m{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\setlength{\fboxsep}{1mm}
+
+
+%   colours
+\definecolor{hsblue}{rgb}{0.2,0.2,0.6}
+\definecolor{purple}{rgb}{0.6,0,0.7}
+\definecolor{gray}{rgb}{0.7,0.7,0.7}
+\definecolor{darkgreen}{rgb}{0.2,0.7,0.2}
+
+% FOAM paths
+% ~~~~~~~~~~
+\newcommand{\macroPath}{\HOME/latex/begin/foam}
+
+% Nabla's specific macro packages
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\usepackage{latexsym,amssymb}
+%\usepackage{\macroPath/figtabeqnindbib}     % Bundled packages + some defined
+%\usepackage{\macroPath/productsversions}
+%\usepackage{\macroPath/specialsymbolsfonts} % Special symbols esp for html
+%\usepackage{\macroPath/keywordstyles}       % Styles/indexing for types eg file
+%\usepackage{\macroPath/environmentformats}  % Environments esp. verbatim
+\usepackage{\macroPath/tensorCommon}        % Common tensor symbols
+\usepackage{\macroPath/tensorEquation}      % Common tensor equations
+\usepackage{\macroPath/tensorOperator}      % Common tensor operators
+
+% make $\times$, $+$, $-$ and $=$ use less space
+\newcommand{\tims}{\negthinspace \times \negthinspace}
+\newcommand{\eq}{\negthinspace = \negthinspace}
+\newcommand{\plus}{\negthinspace + \negthinspace}
+\newcommand{\minus}{\negthinspace - \negthinspace}
+\newcommand{\lt}{\negthinspace <\negthinspace}
+\newcommand{\gt}{\negthinspace > \negthinspace}
+\newcommand{\dofs}{d.o.f.s}
+
+\newcommand{\half}{{\ensuremath{^1\negthickspace/\negthinspace_2}}}
+\newcommand{\hfrac}[2]{{\ensuremath{^{#1}\negthickspace/\negthinspace_{#2}}}}
+\newcommand{\vortDiv}{\ensuremath{\sqrt{\zeta^2\plus \delta^2}}}
+\newcommand{\expForm}[2]{\ensuremath{#1\tims 10^{#2}}}
+\newcommand{\persec}{\ensuremath{s^{\minus 1}}}
+\newcommand{\persecm}{\ensuremath{s^{\minus 1}m^{\minus 1}}}
+\renewcommand{\dprod} {\cdot}
+\everymath{\displaystyle}
+
+\usepackage{pifont}
+\newcommand{\tick}{\ding{52}}
+\usepackage{wasysym}
+%\smiley
+%\frownie
+
+% list modifications
+\setlength{\leftmargini}{0em}
+\setlength{\leftmarginii}{1em}
+
+%\makeatletter
+%\renewcommand\normalsize{%
+%   %\@setfontsize\normalsize\@xiipt{12}%
+%   \setlength{\abovedisplayskip}{6pt}
+%   \setlength{\abovedisplayshortskip}{6pt}
+%   \setlength{\belowdisplayskip}{4pt}
+%   \setlength{\belowdisplayshortskip}{4pt}}
+%\makeatother
+
+

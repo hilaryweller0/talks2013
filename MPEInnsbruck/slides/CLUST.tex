@@ -1,0 +1,40 @@
+\begin{frame}
+
+\begin{block}{CLUST: \small\normalfont Continuous Linear-Upwind Stabilised Transport {\footnotesize (Weller, 2012)}}
+
+$q_e = b
+\underbrace{\biggl(
+    q_u + (\mathbf{x}_e-\mathbf{x}_u)\cdot \nabla_u q
+\biggr)}_{\text{linear upwind}}
++ (1-b)
+\underbrace{
+    \half (q_u + q_d)
+}_{\text{centred}}
+$
+
+where $b = \frac{1}{2}\frac{|u_n|}{|\mathbf{u}_e|}$
+
+\end{block}
+
+\begin{block}{APVM: Anticipated Potential Vorticity Method}
+
+\begin{minipage}{0.53\linewidth}\raggedright
+(Sadourny and Basdevant, 1985, Ringler et al, 2010)
+
+\ \\
+
+$q_e = \half(q_u + q_d) - \half\mathbf{u}_e\cdot\nabla_e q~\Delta t$
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\linewidth}
+\input{graphics/cells.pdf_t}
+\end{minipage}
+
+Same as Lax-Wendroff!
+\end{block}
+
+\pause
+TRiSK -- Computational modes controlled with CLUST \tick \smiley
+
+\end{frame}
+

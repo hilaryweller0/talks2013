@@ -1,0 +1,70 @@
+\clearpage
+.
+\clearpage
+{\bf\large Using the Computers for the Practicals}
+
+\begin{enumerate}
+\item For each practical, make a new directory in your home directory, or a sub-directory in your home directory, eg:
+
+{\tt mkdir prac1\_linearAdvection}
+
+{\tt cd prac1\_linearAdvection}
+
+\item Copy the appropriate files from\\
+{\tt /usr/local/atmos/CMSS2013\_numerics/pythonExamples}. For example, to copy the whole {\tt advection} directory:
+
+{\tt cp -r /usr/local/atmos/CMSS2013\_numerics/pythonExamples/advection $\sim$/prac1\_linearAdvection}
+
+($\sim$ is a shortcut for your home directory)
+
+\item Go to this directory, make a copy of the file that you want to edit and edit it using {\tt gedit}:
+
+{\tt cd advection}
+
+{\tt ls}
+
+{\tt cp linearAdvect.py linearAdvect\_HW.py}    \hfill (HW are my initials)
+
+{\tt gedit linearAdvect\_HW.py \&}
+
+(The {\tt \&} makes the command run in the background)
+
+\item {\bf Very important: tabs versus spaces.} If you mix tabs and spaces in python, it will behave in unexpected ways. The python code that I am giving you has spaces not tabs. So you must setup gedit to put in 4 spaces instead of a tab. In {\tt gedit} go to {\tt Edit -> Preferences -> Editor} and choose {\tt Insert spaces instead of tabs} and set the tab width to 4. You can also enable automatic indentation.
+
+\item The python scripts that I am giving you are heavily commented so that you can pick up the syntax from the script. So have a good look at them before making any changes. 
+
+\item Once you have made and saved your changes you can start python and run your script:
+
+{\tt python}
+
+and in python:
+
+{\tt execfile("linearAdvect\_HW.py")}
+
+\item In python, after a graph has been opened in a new window, you must close that window before the script will continue
+
+\item To leave python, type {\tt exit()}
+
+\item Some essential unix commands:
+
+\begin{tabular}{ll}
+{\tt mkdir dirName} & Make directory named ``dirName'' \\
+{\tt cd dirName} & Change directory to directory named ``dirName''\\
+{\tt cp file1 file2} & Copy file named ``file1'' to location ``file2''\\
+{\tt cp -r dir1 dir2} & Copy the entire directory ``dir1'' to location ``dir2''\\
+{\tt ls} & List contents of the current directory \\
+{\tt pwd} & Print working directory \\
+{\tt mv file1 file2} & Move file (or directory) ``file1'' to file or directory named ``file2'' \\
+{\tt rm file1} & Remove (delete) ``file1'' \\
+{\tt rm -r dir1} & Remove (delete) directory structure ``dir1'' \\
+{\tt man command} & Print the manual page for ``command''\\
+{\tt more file1} & Write out the contents of ``file1'' one page at a time\\
+& (get another page by pressing space) \\
+\end{tabular}
+
+\item You can use {\tt okular} to view pdf files. Eg:
+
+{\tt okular Weller\_ClimSS\_lec.pdf \&}
+
+\end{enumerate}
+

@@ -1,0 +1,26 @@
+\begin{frame}
+\frametitle{Computational Modes on the Hexagonal C-grid}
+
+\begin{minipage}{0.49\linewidth}\centering
+Described by Thuburn, 2008
+\includegraphics[scale=0.25]{graphics/Thu08Mode.png}
+\pause
+\end{minipage}
+\begin{minipage}{0.49\linewidth}
+Vorticty on dual grid:\\
+\includegraphics[width=\linewidth]{graphics/shallowWaterSphereMesh+WilliMountain+bucky7+save+dt100_midPointpv_CN+4320000+vorticityHalfZoom.png}
+\pause
+\end{minipage}
+\begin{minipage}{0.49\linewidth}\centering\small
+However Model for Prediction Across Scales (MPAS) use APVM (Lax-Wendroff):\\
+\includegraphics[width=\linewidth]{graphics/shallowWaterSphereMesh+WilliMountain+bucky7+save+dt100_APVM_CN+4320000+vorticityHalfZoom.png}
+\end{minipage}
+\pause
+\begin{minipage}{0.49\linewidth}\raggedright\small
+Controlled by new monotonic advection scheme to interpolate potential vorticity from vertices to edges: CLUST\\
+\includegraphics[width=\linewidth]{graphics/shallowWaterSphereMesh+WilliMountain+bucky7+save+dt100_quadUpBlend_CN_4320000_vorticityHalfZoom.png}
+
+\end{minipage}
+
+\end{frame}
+

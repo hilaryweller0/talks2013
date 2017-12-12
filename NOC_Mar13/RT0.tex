@@ -1,0 +1,37 @@
+\begin{slide}
+\heading{Finite Element Discretisation}
+
+Because of the low-order accuracy and computational modes of TRiSK, the Gung Ho project is considering various mixed finite element discretisations
+
+\begin{list0}
+    \item Mixed finite element means different function spaces for pressure and velocity (to avoid pressure modes like on the Arakawa A-grid)
+    \begin{list1}
+    \item \vspace{-1.5cm}
+           \begin{minipage}[t]{0.65\linewidth}\raggedright
+           RT0 on hexagons (Thuburn) \\
+           (wrong ratio of pressure/velocty dofs $\therefore$ computational modes)
+           \end{minipage}\hfill
+           \begin{minipage}[c]{0.3\linewidth}
+               \vspace{1.5cm}\includegraphics{graphics/RT0hex.pdf}
+           \end{minipage}
+    \item \vspace{-2cm}
+          \begin{minipage}[t]{0.65\linewidth}\raggedright
+        RT0 on a cubed sphere (Shipton and Cotter)
+          \end{minipage}\hfill
+          \begin{minipage}[c]{0.3\linewidth}
+              \vspace{1.5cm}\includegraphics{graphics/RT0cube.pdf}
+          \end{minipage}
+    \item \vspace{-1.5cm}
+          \begin{minipage}[t]{0.65\linewidth}\raggedright
+              RT1 on a cubed sphere (Melvin et al)
+          \end{minipage}\hfill
+          \begin{minipage}[c]{0.3\linewidth}
+      \vspace{1.5cm}\includegraphics[scale=0.5]{graphics/RT1.png}
+          \end{minipage}
+    \item \vspace{-1.5cm} BDFM1 (Cotter)
+    \end{list1}
+    \item But the correct pressure/velocity dof ratio is insufficient to avoid spurious computational modes
+\end{list0}
+
+\end{slide}
+

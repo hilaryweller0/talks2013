@@ -1,0 +1,38 @@
+\subsection{Practical: Alternative Advection Schemes}
+
+\begin{enumerate}
+\item 
+Some alternative advection schemes are implemented in file \url{pythonExamples/advection/moreAdvectionSchemes.py}. Compare these schemes by un-commenting the lines that call them in \url{pythonExamples/advection/linearAdvect.py}. Try out one of the following changes to one of the existing schemes (they are listed in increasing difficulty so chose one to suit your confidence).
+
+\begin{tabular}{l|l|l}
+Existing & Modification & Points to consider \\
+Scheme   &              & \\
+\hline\hline
+CTCS &  Clipping of unbounded values & What detrimental effect does this have?\\
+\hline
+CTCS &  Artificial diffusion to remove & What diffusion coefficient should you \\
+  &    spurious oscillations & use?\\
+\hline
+Semi-Lagrangian & use cubic interpolation & What time-step can you stably use?  \\
+with linear  &  & \\
+interpolation &&\\
+\hline
+QUICK & Forward-Backward & Is it now stable? \\
+      & time-stepping    & \\
+\hline
+TVD with van
+&\multicolumn{2}{l}{I couldn't find any way to get as good accuracy as CTCS for the smooth}\\
+Leer limiter&\multicolumn{2}{l}{bump using a TVD scheme. I tried different limiters, different time-}\\
+&\multicolumn{2}{l}{stepping, different schemes for the high order flux. Why could I not}\\
+&\multicolumn{2}{l}{find anything as good as CTCS for the smooth profile? Can you?}\\
+\hline
+\end{tabular}
+
+\item Compare your results with CTCS and FTBS for the test case that we previously used. In what ways are your results better or worse. 
+
+\end{enumerate}
+
+\clearpage
+\subsection{Lessons from the practical}
+\clearpage
+

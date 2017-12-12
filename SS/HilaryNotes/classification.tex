@@ -1,0 +1,116 @@
+\chapter{Differential Equations}
+
+\section{Order and Linearity of Partial Differential Equations}
+
+\begin{itemize}
+\item The order of a partial differential equation is the order of the highest derivative.
+
+\item A partial differential equation is linear if it is linear in the unknown functions and their derivatives. (So $f^2$ or $f~\partial f/\partial x$ is a non-linear term for unknown function $f$.)
+
+\item The classification will be described in the following slide
+\end{itemize}
+
+{\renewcommand{\arraystretch}{3}
+\begin{tabular}{l|l|l|l}
+ & Order & Linearity & Classification \\
+\hline
+$\frac{\partial f}{\partial t} + u\frac{\partial f}{\partial x} = 0$ &
+\opttext{first order} & \opttext{linear} & \opttext{hyperbolic}\\
+\hline
+$\nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} = 0$ &
+\opttext{second order} & \opttext{linear} & \opttext{elliptic}\\
+\hline
+$\frac{\partial f}{\partial t}  - K\frac{\partial^2 f}{\partial x^2} = 0$ &
+\opttext{second order} & \opttext{linear} & \opttext{parabolic}\\
+\hline
+$\frac{\partial f}{\partial t} + x^3\frac{\partial f}{\partial x} = 0$ &
+\opttext{first order} & \opttext{linear} & \opttext{hyperbolic}\\
+\hline
+$\frac{\partial f}{\partial t} + f\frac{\partial f}{\partial x} = 0$ &
+\opttext{first order} & \opttext{non-linear} & \opttext{hyperbolic}\\
+\end{tabular}}
+
+\clearpage
+\section{Classification of Partial Differential Equations}
+
+Some second-order PDEs can be classified according to their coefficients:\\
+{\centering$
+A \frac{\partial^2 f}{\partial x^2}
++ 2B \frac{\partial^2 f}{\partial x \partial t}
++ C \frac{\partial^2 f}{\partial t^2}
++ D \frac{\partial f}{\partial x}
++ E \frac{\partial f}{\partial t}
++ Ff = G
+$ \\ \vskip 4pt}
+The discriminant of this PDE is $B^2 - AC$
+\\ \vskip -6pt
+{\setlength{\tabcolsep}{1pt}\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{l|c|l|l}
+\bf Discriminant& \bf Type      & \bf Examples        & \bf Properties \\
+\hline
+               &                & Laplace's equation: & $\bullet$ Smooth solutions \\
+$B^2 - AC < 0$ & {\em elliptic} & $\nabla^2 f = 0$.   & $\bullet$ Dependent on boundary conditions\\
+               & (diagnostic)   & Poisson's equation  & $\bullet$ Solution dependent on everywhere \\
+               &                & $\nabla^2 f = a$    & $\bullet$ Need to solve simultaneous equations\\
+%\\
+\hline
+               &                & diffusion      & $\bullet$ Smooth solutions\\
+$B^2 - AC = 0$ & {\em parabolic}& equation:           & $\bullet$ Dependent on boundary and initial conditions\\
+               & (prognostic)   & \multirow{2}{*}{$\frac{\partial f}{\partial t} - K\frac{\partial^2f}{\partial x^2} = 0$} & 
+                                                        $\bullet$ Need to solve simultaneous equations to \\
+               &                &                     & \hphantom{$\bullet$} avoid severe time-step restrictions \\
+%\\
+\hline
+               &                & wave equation:      & $\bullet$ Discontinuities in initial conditions persist\\
+$B^2 - AC> 0$  & {\em hyperbolic}& \multirow{2}{*}{$\frac{\partial^2 f}{\partial t^2} - c\frac{\partial^2 f}{\partial x^2}=0$}
+                                                      & $\bullet$ Discontinuities can form (eg fronts, shocks) \\
+               & (prognostic)   &                     & $\bullet$ Dependent on initial conditions and surroundings\\
+               &                &                     & $\bullet$ Domain of dependence depends on \\
+               &                &                     & \hphantom{$\bullet$} characteristic speeds eg wave or wind speed \\
+\end{tabular}
+}
+More difficult to classify first-order PDEs. We will do this by considering the properties.
+
+%Different types of PDE require different numerical methods
+
+{\bf Diagnostic equation} -- diagnoses one variable from another at the same time
+
+{\bf Prognostic equation} -- predicts the future based on the present (and the past)
+
+\section{Navier-Stokes Equations for a compressible, rotating atmosphere
+\normalfont\normalsize(without sources or sinks of heat)}
+
+{\bf Using the Lagrangian derivative:}
+$\frac{D\Psi}{Dt} = \frac{\partial\Psi}{\partial t} + \vec{u}\dprod\nabla\Psi$
+
+{\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{ll}
+Momentum & $\frac{D\vec{u}}{Dt} = -2\vec{\Omega}\times\vec{u} - \frac{1}{\rho}\nabla p + \mu_u \nabla^2 \vec{u} + \vec{g}$ \\ \\
+Continuity & $\frac{D\rho}{Dt} + \rho\nabla\dprod\vec{u} = 0$\\ \\
+Energy     & $\frac{D\theta}{Dt} = \mu_\theta \nabla^2 \theta$\\
+\end{tabular}
+\hspace{-0.1cm} where
+\begin{tabular}{ll}
+$\vec{u}$ & Wind vector \\
+$t$       & Time \\
+$\vec{\Omega}$ & Rotation rate of planet\\
+$\rho$         & Density of air\\
+$p$            & Atmospheric pressure\\
+$\vec{g}$      & Gravity vector (downwards)\\
+$\theta$       & Potential temperature\\
+$\mu_u$        & Diffusion coefficients for \\
+$\mu_\theta$   & momentum and potential \\
+               & temperature\\
+\end{tabular}}
+
+\begin{itemize}
+\item Which equations are linear and which are non-linear?
+\item What order are these equations?
+\item What order are they without diffusion (ie $\mu_u=0$ and $\mu_\theta=0$)?
+\item Without diffusion these are hyperbolic
+\item With diffusion they are mixed hyperbolic/parabolic
+\item If incompressible (ie $\frac{\partial\rho}{\partial t}\approx 0$ and $\nabla\dprod\vec{u} = 0$)
+speed of sound is infinite and equations additionally become elliptic
+\item This course focuses on numerical methods for the individual terms of these equations
+\end{itemize}
+

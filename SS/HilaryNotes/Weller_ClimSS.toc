@@ -1,0 +1,60 @@
+\thispagestyle {empty}
+\contentsline {chapter}{\numberline {1}Taylor Series and Numerical Approximations}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Taylor Series}{1}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}Exercise}{1}{subsection.1.1.1}
+\contentsline {section}{\numberline {1.2}Numerical Differentiation}{2}{section.1.2}
+\contentsline {section}{\numberline {1.3}Taylor Series to find Finite Difference Gradients}{3}{section.1.3}
+\contentsline {subsection}{\numberline {1.3.1}Example}{3}{subsection.1.3.1}
+\contentsline {subsection}{\numberline {1.3.2}Exercise}{4}{subsection.1.3.2}
+\contentsline {section}{\numberline {1.4}Interpolation}{5}{section.1.4}
+\contentsline {chapter}{\numberline {2}Differential Equations}{6}{chapter.2}
+\contentsline {section}{\numberline {2.1}Order and Linearity of Partial Differential Equations}{6}{section.2.1}
+\contentsline {section}{\numberline {2.2}Classification of Partial Differential Equations}{7}{section.2.2}
+\contentsline {section}{\numberline {2.3}Navier-Stokes Equations for a compressible, rotating atmosphere \normalfont \relax \fontsize {10}{12}\selectfont \abovedisplayskip 6\p@ plus2\p@ minus5\p@ \abovedisplayshortskip \z@ plus3\p@ \belowdisplayshortskip 6\p@ plus3\p@ minus3\p@ \belowdisplayskip \abovedisplayskip \let \leftmargin \leftmargini \parsep 4\p@ plus2\p@ minus\p@ \topsep 8\p@ plus2\p@ minus4\p@ \itemsep 4\p@ plus2\p@ minus\p@ \leftmargin \leftmargini \parsep 4\p@ plus2\p@ minus\p@ \topsep 8\p@ plus2\p@ minus4\p@ \itemsep 4\p@ plus2\p@ minus\p@ (without sources or sinks of heat)}{8}{section.2.3}
+\contentsline {chapter}{\numberline {3}Linear Advection}{9}{chapter.3}
+\contentsline {section}{\numberline {3.1}Eulerian Finite Difference Schemes for Linear Advection}{11}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Forward in Time, Backward in Space (FTBS)}{11}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Centred in Time, Centred in Space (CTCS)}{12}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.3}The Computational Mode of CTCS}{14}{subsection.3.1.3}
+\contentsline {subsection}{\numberline {3.1.4}Practical: Linear Advection}{18}{subsection.3.1.4}
+\contentsline {chapter}{\numberline {4}Fourier Series}{21}{chapter.4}
+\contentsline {section}{\numberline {4.1}Definitions}{21}{section.4.1}
+\contentsline {section}{\numberline {4.2}Differentiation and Interpolation}{23}{section.4.2}
+\contentsline {section}{\numberline {4.3}Spectral Models}{24}{section.4.3}
+\contentsline {section}{\numberline {4.4}Wave Power and Frequency}{24}{section.4.4}
+\contentsline {chapter}{\numberline {5}Numerical Analysis of Advection Schemes}{28}{chapter.5}
+\contentsline {section}{\numberline {5.1}Von-Neumann Stability Analysis}{28}{section.5.1}
+\contentsline {section}{\numberline {5.2}Von-Neumann Stability Analysis of FTBS}{29}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}What should $|A|$ be for real linear advection?}{30}{subsection.5.2.1}
+\contentsline {section}{\numberline {5.3}Von Neumann Stability Analysis of CTCS}{31}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Practical: Stability Analysis}{32}{subsection.5.3.1}
+\contentsline {chapter}{\numberline {6}Alternative Advection Schemes}{33}{chapter.6}
+\contentsline {section}{\numberline {6.1}Semi-Lagrangian Advection}{34}{section.6.1}
+\contentsline {section}{\numberline {6.2}Artificial Diffusion to Remove Spurious Oscillations}{35}{section.6.2}
+\contentsline {section}{\numberline {6.3}Clipping of unbounded values}{36}{section.6.3}
+\contentsline {section}{\numberline {6.4}The Finite Volume Method}{37}{section.6.4}
+\contentsline {subsection}{\numberline {6.4.1}The Finite Volume Method in one dimension, for constant $u$}{38}{subsection.6.4.1}
+\contentsline {section}{\numberline {6.5}High-order upwind schemes}{39}{section.6.5}
+\contentsline {subsection}{\numberline {6.5.1}QUICK (quadratic upwind)}{39}{subsection.6.5.1}
+\contentsline {section}{\numberline {6.6}Total Variation Diminishing (TVD) schemes}{40}{section.6.6}
+\contentsline {subsection}{\numberline {6.6.1}Limiter functions}{42}{subsection.6.6.1}
+\contentsline {subsection}{\numberline {6.6.2}The Sweby Diagram}{43}{subsection.6.6.2}
+\contentsline {subsection}{\numberline {6.6.3}Van Leer Limiter}{43}{subsection.6.6.3}
+\contentsline {subsection}{\numberline {6.6.4}Practical: Alternative Advection Schemes}{44}{subsection.6.6.4}
+\contentsline {subsection}{\numberline {6.6.5}Lessons from the practical}{45}{subsection.6.6.5}
+\contentsline {chapter}{\numberline {7}Modelling Wave Equations}{46}{chapter.7}
+\contentsline {section}{\numberline {7.1}Analytic Solultion}{46}{section.7.1}
+\contentsline {section}{\numberline {7.2}Unstaggered Forward-Backward}{47}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}Von-Neumann Stability Analysis}{47}{subsection.7.2.1}
+\contentsline {section}{\numberline {7.3}Problems with Arakawa A-grid}{49}{section.7.3}
+\contentsline {section}{\numberline {7.4}Staggered Forward-Backward (C-grid)}{50}{section.7.4}
+\contentsline {section}{\numberline {7.5}Arakawa Grids}{52}{section.7.5}
+\contentsline {section}{\numberline {7.6}Linearised Shallow-Water Equations on Arakawa Grids}{53}{section.7.6}
+\contentsline {subsection}{\numberline {7.6.1}Practical: Solving the Shallow-water Equations}{54}{subsection.7.6.1}
+\contentsline {subsection}{\numberline {7.6.2}Lessons from the practical}{57}{subsection.7.6.2}
+\contentsline {chapter}{\numberline {8}Time-Stepping}{58}{chapter.8}
+\contentsline {section}{\numberline {8.1}Some Time-Stepping Schemes}{58}{section.8.1}
+\contentsline {section}{\numberline {8.2}Semi-implicit time-stepping}{59}{section.8.2}
+\contentsline {chapter}{\numberline {9}Diffusion}{61}{chapter.9}
+\contentsline {subsection}{\numberline {9.0.1}Practical: Diffusion}{62}{subsection.9.0.1}
+\contentsline {subsection}{\numberline {9.0.2}Lessons from the practical}{63}{subsection.9.0.2}

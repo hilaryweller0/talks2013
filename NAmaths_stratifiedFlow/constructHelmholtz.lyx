@@ -1,0 +1,656 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass beamer
+\begin_preamble
+\usepackage{animate}
+
+% hack to get natbib working with beamer
+\newcommand{\newblock}{}
+
+% list modifications
+\setlength{\leftmargini}{0em}
+\setlength{\leftmarginii}{1em}
+\end_preamble
+\options serif
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package none
+\inputencoding auto
+\fontencoding default
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 2
+\use_esint 1
+\use_mhchem 0
+\use_mathdots 0
+\cite_engine natbib_authoryear
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip 0bp
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Modelling Stratified Flow
+\end_layout
+
+\begin_layout Author
+Hilary Weller
+\end_layout
+
+\begin_layout Institute
+Meteorology, University of Reading
+\end_layout
+
+\begin_layout TitleGraphic
+\begin_inset VSpace vfill
+\end_inset
+
+
+\begin_inset Graphics
+	filename /home/hilary/graphics/uniLogoName.jpg
+	lyxscale 5
+	scale 5
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename /home/hilary/graphics/NCAS_logo.png
+	lyxscale 30
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Aim: Solution of the fully compressible Euler equations on the sphere with
+ non-orthogonal orography
+\end_layout
+
+\begin_layout Itemize
+Implicit treatment of
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+acoustic waves
+\end_layout
+
+\begin_layout Itemize
+gravity waves
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+No explicitly defined reference state (do not split variables into mean
+ and perturbation)
+\end_layout
+
+\begin_layout Itemize
+Mimetic properties
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+steady geostrophic modes (exact geostrophically balanced solutions)
+\end_layout
+
+\begin_layout Itemize
+curl free gradients
+\end_layout
+
+\begin_layout Itemize
+conservation of
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+mass
+\end_layout
+
+\begin_layout Itemize
+potential vorticity
+\end_layout
+
+\begin_layout Itemize
+energy (nearly)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Wave dispersion - no spurious pressure modes (ie like a C-grid)
+\end_layout
+
+\begin_layout Itemize
+Accuracy - approaching 2nd order
+\end_layout
+
+\begin_layout Itemize
+Cost - cheap finite volumes (ie no mass matrix to invert)
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginFrame
+Semi-implicit solution without a reference state
+\end_layout
+
+\begin_layout Standard
+Fully compressible Euler equations:
+\begin_inset Formula 
+\begin{alignat*}{3}
+ & \textnormal{Momentum\,\,\,\,} & \frac{\partial\rho\mathbf{u}}{\partial t}+\nabla\cdot\rho\mathbf{uu} & +2\rho\Omega\times\mathbf{u} & =\rho\mathbf{g}-\rho c_{p}\theta\nabla\Pi\\
+ & \textnormal{Continuity} & \frac{\partial\rho}{\partial t}+\nabla\cdot\rho\mathbf{u} & =0\\
+ & \textnormal{Energy (flux)} & \frac{\partial\rho\theta}{\partial t}+\nabla\cdot\rho\mathbf{u}\theta & =0 & \textnormal{(advective) }\frac{\partial\theta}{\partial t}+ & \mathbf{u}\cdot\nabla\theta=0\\
+ & \textnormal{State} & \Pi^{\frac{1-\kappa}{\kappa}}=\frac{R}{p_{0}}\rho\theta
+\end{alignat*}
+
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+potential temperature
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\theta=T\left(\frac{p_{0}}{p}\right)^{\kappa}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Exner function of pressure
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Pi=\left(\frac{p}{p_{0}}\right)^{\kappa}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Need implicit solution of gravity and acoustic waves
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginFrame
+Prognostic Variables
+\end_layout
+
+\begin_layout Standard
+Assume and orthogonal mesh
+\end_layout
+
+\begin_layout Standard
+Prognositic variables:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+mass flux through each face
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $U=\rho\mathbf{u}\cdot\mathbf{S}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+potential temperature
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\theta=T\left(\frac{p_{0}}{p}\right)^{\kappa}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Exner function of pressure
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Pi=\left(\frac{p}{p_{0}}\right)^{\kappa}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\mathbf{S}$
+\end_inset
+
+ is the face area vector (outward pointing normal to each face with the
+ magnitude of the face area)
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginFrame
+Construction of Helmholtz equation
+\size footnotesize
+ (first order in time for brevity)
+\end_layout
+
+\begin_layout Standard
+Rearrange advective form of 
+\begin_inset Formula $\theta$
+\end_inset
+
+ equation to give 
+\begin_inset Formula $\theta^{n+1}$
+\end_inset
+
+ in terms of normal component of velocity:
+\begin_inset Formula 
+\[
+\theta^{n+1}=\theta^{n}-\Delta t\ \mathbf{\left(u^{\perp}\right)}^{n}\cdot\nabla\theta^{\ell}-\Delta t\ \mathbf{\left(u\cdot\widehat{\mathbf{S}}\right)}^{n+1}\nabla_{n}\theta^{\ell}
+\]
+
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0pt">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+where 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\mathbf{u}^{\perp}=\mathbf{u}-\left(\mathbf{u}\cdot\mathbf{\mathbf{\hat{S}}}\right)\mathbf{\hat{S}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\nabla_{n}\theta=\left(\nabla\theta\right)\cdot\mathbf{\hat{S}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Substitute into momentum and take dot product with 
+\begin_inset Formula $\mathbf{S}$
+\end_inset
+
+ (essential for implicit gravity waves) (remember 
+\begin_inset Formula $U=\rho\mathbf{u}\cdot\mathbf{S}$
+\end_inset
+
+):
+\begin_inset Formula 
+\begin{align*}
+ & \frac{U^{n+1}-U^{n}}{\Delta t}+\left(\nabla\cdot U\mathbf{u}+2\rho\Omega\times\mathbf{u}\right)\cdot\mathbf{S}=\rho\mathbf{g\cdot\mathbf{S}}\\
+ & -c_{p}\left\{ \rho|\mathbf{S}|\theta^{n}-\Delta t|\mathbf{S}|\rho\mathbf{\left(u^{\perp}\right)^{n}}\cdot\nabla\theta-\Delta t\ U^{n+1}\nabla_{n}\theta\right\} \nabla_{n}\Pi^{n+1}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Construction of Helmholtz equation
+\end_layout
+
+\begin_layout Standard
+Rearrange to get 
+\begin_inset Formula $U^{n+1}$
+\end_inset
+
+ on the LHS as a function of 
+\begin_inset Formula $\Pi^{n+1}$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+U^{n+1} & \left(1-\Delta t^{2}c_{p}\nabla_{n}\theta\nabla_{n}\Pi\right)=U^{n}-\Delta t\left(\nabla\cdot U\mathbf{u}+2\rho\Omega\times\mathbf{u}\right)\cdot\mathbf{S}\\
+ & +\Delta t\rho\mathbf{g\cdot\mathbf{S}}-\Delta tc_{p}\rho|\mathbf{S}|\left\{ \theta^{n}-\Delta t\mathbf{\left(u^{\perp}\right)^{n}}\cdot\nabla\theta\right\} \nabla_{n}\Pi^{n+1}
+\end{align*}
+
+\end_inset
+
+Which is expressed as
+\begin_inset Formula 
+\[
+U^{n+1}=G\left(U^{\prime}-\Delta tc_{p}\rho|\mathbf{S}|\theta^{\prime}\nabla_{n}\Pi^{n+1}\right)
+\]
+
+\end_inset
+
+and substituted into the continuity equation (for implicit acoustic waves):
+\begin_inset Formula 
+\[
+\frac{\partial\rho}{\partial t}+\nabla\cdot\left(GU^{\prime}\right)-\nabla\cdot\left(G\Delta tc_{p}\rho|\mathbf{S}|\theta^{\prime}\nabla_{n}\Pi^{n+1}\right)=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginFrame
+Construction of Helmholtz equation
+\end_layout
+
+\begin_layout Standard
+From
+\begin_inset Formula 
+\[
+\frac{\partial\rho}{\partial t}+\nabla\cdot\left(GU^{\prime}\right)-\nabla\cdot\left(G\Delta tc_{p}\rho|\mathbf{S}|\theta^{\prime}\nabla_{n}\Pi^{n+1}\right)=0
+\]
+
+\end_inset
+
+we need to create a Helmholtz equation for 
+\begin_inset Formula $\Pi$
+\end_inset
+
+.
+ So express 
+\begin_inset Formula $\rho$
+\end_inset
+
+ as a function of 
+\begin_inset Formula $\Pi$
+\end_inset
+
+ (using equation of state):
+\begin_inset Formula 
+\begin{equation}
+\rho^{n+1}=\Psi\ \Pi^{n+1}\label{eq:rhoExner}
+\end{equation}
+
+\end_inset
+
+where
+\begin_inset Formula 
+\begin{equation}
+\Psi=\left(\rho^{\ell}\right)^{\frac{2\kappa-1}{\kappa-1}}\left(\frac{R\theta}{p_{0}}\right)^{\frac{\kappa}{\kappa-1}}\approx\left(\frac{p_{0}}{R}\right)^{0.4}\frac{\rho^{0.6}}{\theta^{0.4}}\label{eq:Psi}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\rho$
+\end_inset
+
+ in equation (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Psi"
+
+\end_inset
+
+) is predicted from the continuity with explicit fluxes.
+ This then gives
+\begin_inset Formula 
+\begin{equation}
+\frac{\Psi\Pi^{n+1}-\Psi\Pi^{n}}{\Delta t}+\nabla\cdot\left(GU^{\prime}\right)-\nabla\cdot\left(G\Delta tc_{p}\rho|\mathbf{S}|\theta^{\prime}\nabla_{n}\Pi^{n+1}\right)=0\label{eq:Helm}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Standard
+This Helmholtz equation (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Helm"
+
+\end_inset
+
+) is solved for 
+\begin_inset Formula $\Pi$
+\end_inset
+
+ and then a back substitution is made for 
+\begin_inset Formula $U$
+\end_inset
+
+.
+ The flux form of the energy equation is solved separately for 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+This is VERY convergent for the test cases I have tried and allows long
+ time steps w.r.t.
+ gravity and acoustic waves speeds.
+ But can it be proved or demonstrated more generally that equations (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:rhoExner"
+
+\end_inset
+
+) and (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Psi"
+
+\end_inset
+
+) are a good linearisation of the equation of state that leads to a convergent
+ algorithm?
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\end_body
+\end_document

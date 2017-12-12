@@ -1,0 +1,33 @@
+\chapter{Numerical Integration}
+
+Integration cannot always be done exactly for two reasons:
+\begin{itemize}
+\item Not all functions can be integrated analytically
+\item An analytic function is not known, just the values at some points. 
+\end{itemize}
+There are a number of methods to integrate a function numerically. For example:
+\begin{itemize}
+\item The trapezium rule
+\item $n$-point Gaussian quadrature
+\item Simpson's rule
+\end{itemize}
+
+\begin{minipage}{0.49\linewidth}
+\subsection{1-point Gaussian quadrature}
+Divide the interval into $N$ parts of length $\Delta x$):\\
+\[
+\int_a^b f(x) dx \approx
+\sum_{i=0}^{N-1} \Delta x f\bigl(x_i\bigr)
+\]
+\begin{tabular}{ll}
+where & $\Delta x = (b-a)/N$\\
+      & $x_i=a + (i+\half)\Delta x$\\
+\end{tabular}
+
+This is 1-point because there is only 1 evaluation of $f$ in each sub-interval of size $\Delta x$.
+\end{minipage}
+%
+\begin{minipage}{0.49\linewidth}
+\input{pythonWork/GaussQuadIntegration/GaussQuad_xfig.pdf_t}
+\end{minipage}
+

@@ -1,0 +1,31 @@
+\begin{frame}
+\begin{block}{Why?}
+\pause
+\begin{itemize}
+\item Resolution where it is needed rather than at the poles
+\item No abrupt changes in mesh/grid spacing
+\item In order to move away from a lat-lon grid, the discretisation and code structure must inevitably be more complicated anyway   
+\end{itemize}
+\pause
+\end{block}
+
+\begin{block}{Why not?}
+\pause
+\begin{itemize}
+\item Lat-lon grid model is simple and $\therefore$ efficient
+\item Simple to achieve high accuracy
+\item The most accurate forecast models (ECMWF and Met Office) both use lat-lon grids
+\end{itemize}
+\pause
+
+\end{block}
+\begin{block}{But}
+\pause
+
+\begin{itemize}
+\item Lat-lon grid models do not scale to $\sim\negthinspace 100K$ processing cores
+\item Errors associated with local area forecasts
+\end{itemize}
+\end{block}
+\end{frame}
+

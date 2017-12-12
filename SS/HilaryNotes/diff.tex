@@ -1,0 +1,36 @@
+\chapter{Diffusion}
+
+
+\begin{tabulary}{\linewidth}{lCr}
+Eulerian diffusion schemes for
+&$\frac{\partial\phi}{\partial t}  - K\frac{\partial^2\phi}{\partial x^2} = 0$
+&assuming $x=j~\Delta x$, $t = n~\Delta t$, $K>0$.
+\end{tabulary}\\
+\vspace{-20pt}
+
+{\renewcommand{\arraystretch}{2.5}
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{cccccc}
+ & Scheme & & \multicolumn{2}{c}{Order} & Stability \vspace{-20pt}\\
+ &        & & time & space              & constraint\vspace{-5pt}\\
+\hline
+Explicit & FTCS &
+$\frac{\phi^{(n+1)}_j - \phi^{(n)}_j}{\Delta t} -K\frac{\phi^{(n)}_{j+1} - 2\phi^{(n)}_{j} + \phi^{(n)}_{j-1}}{\Delta x^2} = 0$ & 1 & 2 &
+\opttext{$\Delta t \le \frac{1}{2}\frac{\Delta x^2}{K}$}\\
+Implicit & BTCS &
+$\frac{\phi^{(n+1)}_j - \phi^{(n)}_j}{\Delta t} -K\frac{\phi^{(n+1)}_{j+1} - 2\phi^{(n+1)}_{j} + \phi^{(n+1)}_{j-1}}{\Delta x^2} = 0$ & 1 & 2 &
+\opttext{stable $\forall ~ \Delta t$}\\
+\end{tabular}}\\
+
+\subsubsubheading{Questions and Exercises on Eulerian Diffusion Schemes}
+\begin{enumerate}
+\item How were the formulae for FTCS and BTCS derived?
+\item Find the stability constraints for FTCS and BTCS using von-Neumann stability analysis and fill in the last column of the table above.
+\end{enumerate}
+
+\subsubsubheading{Notes}
+\begin{itemize}
+\item The implicit advection and diffusion schemes need neighbour values at time $n+1$ to evaluate $\phi^{(n+1)}$. Therefore a large matrix ($N\times N$) must be constructed and solved at each time step (where $N$ is the number of points).
+\item The time step restriction for FTCS is dependent on $1/\Delta x^2$. So when the resolution is increased a little the time step must be reduced a lot. This can be expensive if diffusion is high so BTCS must be used instead.
+\end{itemize}
+

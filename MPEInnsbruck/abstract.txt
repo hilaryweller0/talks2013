@@ -1,0 +1,5 @@
+Atmospheric Modelling on Arbitrary Grids
+
+Dr Hilary Weller (University of Reading)
+
+Weather forecasting models which use latitude-longitude grids, semi-implicit time-stepping and semi-Lagrangian advection are usually the most accurate and efficient models in the world. However this efficiency is achieved using algorithms which require heavy communication over long distances. This communication limits scalability on massively parallel computers which are becoming common-place. I will discuss numerical methods for arbitrary grids which involve less communication and less memory access such as low-order mimetic schemes and Runge-Kutta vertically implicit, horizontally explicit time-stepping schemes. I will also discuss multi-resolution meshes as an alternative to one-way nesting in order to achieve high resolution for local area forecasts.

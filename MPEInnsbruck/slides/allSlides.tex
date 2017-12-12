@@ -1,0 +1,760 @@
+\makeatletter{}\newcommand{\HOME}{/home/hilary}
+\newcommand{\FOAM}{\HOME/OpenFOAM/hilary-dev}
+\newcommand{\RUN}{\FOAM/run}
+\newcommand{\RUNWM}{\RUN/shallowWaterSphere}
+\newcommand{\GMTC}{\HOME/gmt/usr/colours/special}
+
+
+\newcommand{\de}{\ensuremath{^\circ}}
+\newcommand{\prim}{\ensuremath{^\prime}}
+\newcommand{\ie}{\ensuremath{i.e.}}
+
+\newcommand{\sideLabel}[2]
+{
+\begin{sideways}\begin{minipage}{#1} \centering
+    #2
+\end{minipage}\end{sideways}
+}
+
+\renewcommand{\floatpagefraction}{0.7}
+\renewcommand{\textfraction}{0}
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+
+\newcommand{\eqn}[1]{\mbox{$#1$}}
+ 
+\makeatletter{}\makeatletter
+
+\documentclass[mathserif,serif,handout]{beamer}
+    
+
+\usepackage{color, rotating, times, amssymb, amsmath, mathtools, graphicx, subfigure, tabularx, lscape, multirow, natbib, wasysym, array, hyperref,fancybox,animate}
+
+
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{K}{>{\centering\arraybackslash}p}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\setlength{\fboxsep}{1mm}
+
+
+\definecolor{hsblue}{rgb}{0.2,0.2,0.6}
+\definecolor{purple}{rgb}{0.6,0,0.7}
+\definecolor{gray}{rgb}{0.7,0.7,0.7}
+\definecolor{darkgreen}{rgb}{0.2,0.7,0.2}
+
+\newcommand{\macroPath}{\HOME/latex/begin/foam}
+
+\usepackage{latexsym,amssymb}
+\usepackage{\macroPath/tensorCommon}        \usepackage{\macroPath/tensorEquation}      \usepackage{\macroPath/tensorOperator}      
+\newcommand{\tims}{\negthinspace \times \negthinspace}
+\newcommand{\eq}{\negthinspace = \negthinspace}
+\newcommand{\plus}{\negthinspace + \negthinspace}
+\newcommand{\minus}{\negthinspace - \negthinspace}
+\newcommand{\lt}{\negthinspace <\negthinspace}
+\newcommand{\gt}{\negthinspace > \negthinspace}
+\newcommand{\dofs}{d.o.f.s}
+
+\newcommand{\half}{{\ensuremath{^1\negthickspace/\negthinspace_2}}}
+\newcommand{\hfrac}[2]{{\ensuremath{^{#1}\negthickspace/\negthinspace_{#2}}}}
+\newcommand{\vortDiv}{\ensuremath{\sqrt{\zeta^2\plus \delta^2}}}
+\newcommand{\expForm}[2]{\ensuremath{#1\tims 10^{#2}}}
+\newcommand{\persec}{\ensuremath{s^{\minus 1}}}
+\newcommand{\persecm}{\ensuremath{s^{\minus 1}m^{\minus 1}}}
+\renewcommand{\dprod} {\cdot}
+\everymath{\displaystyle}
+
+\usepackage{pifont}
+\newcommand{\tick}{\ding{52}}
+\usepackage{wasysym}
+
+\setlength{\leftmargini}{0em}
+\setlength{\leftmarginii}{1em}
+
+
+
+ 
+
+
+
+\makeatletter{}\title{Atmospheric Modelling on Arbitrary Grids}
+
+\def\coauthors{Sean Cavany, Phil Browne, John Thuburn, Colin Cotter}
+
+\author[me]{Hilary Weller\inst{1} \\ \vskip 1em
+\footnotesize With thanks to \coauthors}
+
+\institute{\inst{1} University of Reading}
+
+\titlegraphic{\raggedright\vfill\vspace{2cm}
+\includegraphics[scale=0.05]{\HOME/graphics/uniLogoName.jpg}\\
+\includegraphics[scale=0.3]{\HOME/graphics/NCAS_logo.png}
+}
+
+\begin{document}
+{
+\usebackgroundtemplate{
+    \begin{picture}(0,0)\put(220,-260)
+    {\includegraphics[width=0.45\textwidth]{mesh_face.png}}\end{picture}}
+\frame{\titlepage}
+}
+ 
+
+\makeatletter{}\begin{frame}
+\begin{block}{Why?}
+\pause
+\begin{itemize}
+\item Resolution where it is needed rather than at the poles
+\item No abrupt changes in mesh/grid spacing
+\item In order to move away from a lat-lon grid, the discretisation and code structure must inevitably be more complicated anyway   
+\end{itemize}
+\pause
+\end{block}
+
+\begin{block}{Why not?}
+\pause
+\begin{itemize}
+\item Lat-lon grid model is simple and $\therefore$ efficient
+\item Simple to achieve high accuracy
+\item The most accurate forecast models (ECMWF and Met Office) both use lat-lon grids
+\end{itemize}
+\pause
+
+\end{block}
+\begin{block}{But}
+\pause
+
+\begin{itemize}
+\item Lat-lon grid models do not scale to $\sim\negthinspace 100K$ processing cores
+\item Errors associated with local area forecasts
+\end{itemize}
+\end{block}
+\end{frame}
+
+ 
+\makeatletter{}\begin{frame}
+\frametitle{Parallel scaling bottlenecks}
+
+\begin{minipage}{0.6\linewidth}
+\includegraphics[width=\linewidth]
+{../../../2011/pLinks/graphics/meshes+latLon+constant+mesh.pdf}
+
+\begin{picture}(0,0)\put(79,76)
+{\includegraphics[scale=0.42]{../../../2011/gungHoNCASJul2011/figs/arrow.pdf}}
+\end{picture}
+
+\end{minipage}
+\hfill
+\begin{minipage}{0.35\linewidth}
+
+\begin{itemize}
+\item lat-lon grid?
+\item semi-implicit?
+\item semi-Lagrangian?
+\item Fourier transforms?
+\end{itemize}
+
+\end{minipage}
+
+\end{frame}
+
+ 
+\makeatletter{}\begin{frame}
+\begin{block}{Gung-Ho: The UM Dynamical Core Project}
+
+\begin{itemize}
+\pause
+\item Joint project lead by Nigel Wood at the
+    \begin{itemize}
+    \item UK Met Office
+    \item 11 academics funded by Natural Environment Research Council
+    \item Science and Technology Facilities Council
+    \end{itemize}
+\pause
+\item Research, design and develop a new dynamical core for:
+    \begin{itemize}
+    \item operational, global and regional, weather and climate
+    \item massively parallel computers
+    \end{itemize}
+\end{itemize}
+\end{block}
+\pause
+\begin{block}{Requirements:}
+\pause
+\begin{itemize}
+\item Unified approach: 100m -- 150km
+\item $10^5$ -- $10^6$ processors
+\item Inherent conservation of tracers {\color{purple}\it (and mass?)}
+\item Comparable accuracy for wall clock time to current dynamical core
+\item Regional modelling (variable grid or limited area)
+\item Model top up to 600km
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+ 
+\makeatletter{}\begin{frame}
+\frametitle{Numerical Requirements (and Mimetic Properties)}
+\pause
+\begin{itemize}
+\item Quasi-uniform tessellation of the sphere (not lat-lon) \pause
+\item Approaching 2nd order accuracy \pause
+\item Inherent conservation of tracers (and mass) \pause
+\item Approaching energy conservation \pause
+\item Accurate wave dispersion
+    \begin{list}{$\Rightarrow$}
+    \item C-grid (staggered grid) rather than A-grid (co-located)\pause
+    
+        \only<7-8>{\begin{tabular}{cc}
+        A-grid & C-grid \\
+        \only<7>{\makeatletter{}\begin{picture}(0,0)\includegraphics{../../SS/HilaryNotes/figs/Arakawa/A.pdf}\end{picture}\setlength{\unitlength}{1579sp}\begingroup\makeatletter\ifx\SetFigFont\undefined\gdef\SetFigFont#1#2#3#4#5{  \reset@font\fontsize{#1}{#2pt}  \fontfamily{#3}\fontseries{#4}\fontshape{#5}  \selectfont}\fi\endgroup\begin{picture}(4824,4824)(-11,-3973)
+\put(3076,-1936){\makebox(0,0)[b]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$h$, $u$, $v$}}}}}
+\end{picture} }
+        \only<8>{\animategraphics[width=0.3\linewidth]{5}
+        {../../../2011/climateSummerSchool/HilaryNotes/2dSWE/Agrid}{0}{9}}
+        &
+        \only<7>{\makeatletter{}\begin{picture}(0,0)\includegraphics{../../SS/HilaryNotes/figs/Arakawa/C.pdf}\end{picture}\setlength{\unitlength}{1579sp}\begingroup\makeatletter\ifx\SetFigFont\undefined\gdef\SetFigFont#1#2#3#4#5{  \reset@font\fontsize{#1}{#2pt}  \fontfamily{#3}\fontseries{#4}\fontshape{#5}  \selectfont}\fi\endgroup\begin{picture}(4824,4824)(-11,-3973)
+\put(2401,-1411){\makebox(0,0)[b]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$h$}}}}}
+\put(1351,-1861){\makebox(0,0)[b]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$u$}}}}}
+\put(3301,-1861){\makebox(0,0)[b]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$u$}}}}}
+\put(2101,-2686){\makebox(0,0)[b]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$v$}}}}}
+\put(2101,-661){\makebox(0,0)[b]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$v$}}}}}
+\end{picture} }
+        \only<8>{\animategraphics[width=0.3\linewidth]{5}
+        {../../../2011/climateSummerSchool/HilaryNotes/2dSWE/Cgrid}{0}{9}}
+        \end{tabular}}
+        
+    \only<8>{\footnotesize\hspace{-1.1cm} (Solution of the linearised shallow-water equations starting from an initial bump)}
+
+    \end{list}\pause\pause
+    \item Charney-Phillips staggering in the vertical (pressure and density staggered to avoid spurious hydrostatic balance)\pause
+    \item Curl free gradients\pause
+    
+    \item Exact numerical solutions for geostropically balanced flow $2\Omega\times\mathbf{u}=-g\nabla h$\pause
+    \item Accurate implied advection of potential vorticity\pause
+    \item Large Courant number in the vertical\pause
+    \item<only@14> Control of or lack of spurious computational modes
+\end{itemize}
+
+
+\end{frame}
+
+ 
+\makeatletter{}\begin{frame}
+\frametitle{What Horizontal Grid?}
+
+\newcommand{\figWidth}{0.3\linewidth}
+\begin{tabular}{ccc}
+\includegraphics[width=\figWidth]
+{../../../2011/gungHoNCASJul2011/graphics/shallowWaterTRiSK+WilliSteady+24x48_V2+constant+mesh.pdf}
+&
+\includegraphics[width=\figWidth]
+{../../../2011/gungHoNCASJul2011/graphics/shallowWaterTRiSK+WilliSteady+bucky4+constant+mesh.pdf}
+&
+\includegraphics[width=\figWidth]
+{../../../2011/gungHoNCASJul2011/graphics/shallowWaterTRiSK+WilliSteady+tri4+constant+mesh.pdf}
+\\
+skipped lat-lon & hexagonal-icosahedral & triangular icosahedral \\
+\includegraphics[width=\figWidth]
+{../../../2011/gungHoNCASJul2011/graphics/shallowWaterTRiSK+WilliSteady+kite4+constant+mesh.pdf}
+&
+\includegraphics[width=\figWidth]
+{../../../2011/gungHoNCASJul2011/graphics/shallowWaterTRiSK+WilliSteady+cube12_Voronoi+constant+meshBlack.pdf}
+&
+\includegraphics[width=\figWidth]{../../../2011/gungHoNCASJul2011/figs/yinYang.png}
+\\
+kites & cubed sphere & Yin-Yang
+\end{tabular}
+
+\end{frame}
+
+ 
+\makeatletter{}\begin{frame}
+\frametitle{TRiSK: C-grid on arbitrary grids of the sphere}
+
+Thuburn, Ringler, Skamarock and Klemp, JCP, 2009
+
+\begin{itemize}
+\item Method of reconstructing tangential velocity on a face from surrounding normal components on any {\em\color{magenta} orthogonal, 2d} grid
+\item Mimetic properties:
+    \begin{itemize}
+    \item Maintains stationary geostrophic balance\\
+        (since divergence on dual = divergence on primal)
+    \item Conserves energy
+    \item Conserves potential vorticity
+    \end{itemize}
+\item Low order accurate (0-2)
+\end{itemize}
+
+\begin{minipage}{0.4\linewidth}
+\includegraphics[width=\linewidth]{graphics/TRiSK.pdf}
+\end{minipage}
+\begin{minipage}{0.49\linewidth}\centering
+TRiSK defines weights, $w_i$ for:
+\[v = \sum_i w_i u_i\]
+\end{minipage}
+\end{frame}
+
+ 
+\makeatletter{}\begin{frame}
+\includegraphics[angle=270, width=1.01\linewidth]{graphics/gridResults2.png}
+\end{frame}
+ 
+\makeatletter{}\begin{frame}
+\frametitle{Computational Modes on the Hexagonal C-grid}
+
+\begin{minipage}{0.49\linewidth}\centering
+Described by Thuburn, 2008
+\includegraphics[scale=0.25]{graphics/Thu08Mode.png}
+\pause
+\end{minipage}
+\begin{minipage}{0.49\linewidth}
+Vorticty on dual grid:\\
+\includegraphics[width=\linewidth]{graphics/shallowWaterSphereMesh+WilliMountain+bucky7+save+dt100_midPointpv_CN+4320000+vorticityHalfZoom.png}
+\pause
+\end{minipage}
+\begin{minipage}{0.49\linewidth}\raggedright\small
+Controlled by new monotonic advection scheme to interpolate potential vorticity from vertices to edges: CLUST\\
+\includegraphics[width=\linewidth]{graphics/shallowWaterSphereMesh+WilliMountain+bucky7+save+dt100_quadUpBlend_CN_4320000_vorticityHalfZoom.png}
+\pause
+\end{minipage}
+\begin{minipage}{0.49\linewidth}\centering\small
+However Model for Prediction Across Scales (MPAS) use APVM (Lax-Wendroff):\\
+\includegraphics[width=\linewidth]{graphics/shallowWaterSphereMesh+WilliMountain+bucky7+save+dt100_APVM_CN+4320000+vorticityHalfZoom.png}
+\end{minipage}
+
+\end{frame}
+
+ 
+\makeatletter{}\begin{frame}
+
+\begin{block}{CLUST: \small\normalfont Continuous Linear-Upwind Stabilised Transport {\footnotesize (Weller, 2012)}}
+
+$q_e = b
+\underbrace{\biggl(
+    q_u + (\mathbf{x}_e-\mathbf{x}_u)\cdot \nabla_u q
+\biggr)}_{\text{linear upwind}}
++ (1-b)
+\underbrace{
+    \half (q_u + q_d)
+}_{\text{centred}}
+$
+
+where $b = \frac{1}{2}\frac{|u_n|}{|\mathbf{u}_e|}$
+
+\end{block}
+
+\begin{block}{APVM: Anticipated Potential Vorticity Method}
+
+\begin{minipage}{0.53\linewidth}\raggedright
+(Sadourny and Basdevant, 1985, Ringler et al, 2010)
+
+\ \\
+
+$q_e = \half(q_u + q_d) - \half\mathbf{u}_e\cdot\nabla_e q~\Delta t$
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\linewidth}
+\makeatletter{}\begin{picture}(0,0)\includegraphics{graphics/cells.pdf}\end{picture}\setlength{\unitlength}{1036sp}\begingroup\makeatletter\ifx\SetFigFont\undefined\gdef\SetFigFont#1#2#3#4#5{  \reset@font\fontsize{#1}{#2pt}  \fontfamily{#3}\fontseries{#4}\fontshape{#5}  \selectfont}\fi\endgroup\begin{picture}(5114,4649)(2859,-4328)
+\put(5266,-1006){\makebox(0,0)[lb]{\smash{{\SetFigFont{6}{7.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}${\mathbf x}_u$}}}}}
+\put(5678,-2317){\makebox(0,0)[lb]{\smash{{\SetFigFont{6}{7.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}${\mathbf u}_e$}}}}}
+\put(5049,-2633){\makebox(0,0)[lb]{\smash{{\SetFigFont{6}{7.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$q_d$}}}}}
+\put(5289,-2971){\makebox(0,0)[lb]{\smash{{\SetFigFont{6}{7.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}${\mathbf x}_d$}}}}}
+\put(5056,-2258){\makebox(0,0)[lb]{\smash{{\SetFigFont{6}{7.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$u_n$}}}}}
+\put(5476,-1404){\makebox(0,0)[lb]{\smash{{\SetFigFont{6}{7.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$q_u$}}}}}
+\put(5011,-1906){\makebox(0,0)[lb]{\smash{{\SetFigFont{6}{7.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}${\mathbf x}_e$}}}}}
+\end{picture} 
+\end{minipage}
+
+Same as Lax-Wendroff!
+\end{block}
+
+\pause
+TRiSK -- Computational modes controlled with CLUST \tick \smiley
+
+\end{frame}
+
+ 
+\makeatletter{}\begin{frame}
+\frametitle{But TRiSK is low-order accurate \frownie:}
+
+\includegraphics[width=\linewidth]{graphics/TRiSKorder.png}
+
+\end{frame}
+
+ 
+\makeatletter{}\begin{frame}
+\frametitle{Finite Element Discretisations}
+
+Mixed Finite Elements -- Different function spaces for pressure and velocity (to avoid pressure modes of co-located methods)
+
+\pause
+\begin{itemize}[<+->]
+    \item
+           \begin{minipage}[t]{0.65\linewidth}\raggedright
+           RT0 on hexagons (Thuburn) \\
+           (wrong ratio of pressure/velocty dofs $\therefore$ computational modes)
+           \end{minipage}\hfill
+           \begin{minipage}[c]{0.3\linewidth}
+               \includegraphics[scale=0.4]{graphics/RT0hex.pdf}
+           \end{minipage}
+    \item
+          \begin{minipage}[t]{0.65\linewidth}\raggedright
+        RT0 on a cubed sphere (Shipton and Cotter)
+          \end{minipage}\hfill
+          \begin{minipage}[c]{0.3\linewidth}
+              \includegraphics[scale=0.4]{graphics/RT0cube.pdf}
+          \end{minipage}
+    \item
+          \begin{minipage}[t]{0.65\linewidth}\raggedright
+              RT1 on a cubed sphere (Melvin et al)
+          \end{minipage}\hfill
+          \begin{minipage}[c]{0.3\linewidth}
+      \includegraphics[scale=0.2]{graphics/RT1.png}
+          \end{minipage}
+    \item BDFM1 (Cotter)
+\end{itemize}
+\pause
+{\em But} the correct pressure/velocity dof ratio is a necessary but {\em not sufficient} to avoid spurious computational modes.
+\end{frame}
+
+\begin{frame}
+\includegraphics[width=\linewidth]{graphics/ColinGrids.pdf}
+\end{frame}
+
+ 
+\makeatletter{}\begin{frame}
+\frametitle{Test Case Results}
+\framesubtitle{Solid-body rotation errors after 5 days (shallow water equations)}
+
+\begin{tabular}{cc}
+RMS height error ($\ell_2(h)$)
+&
+Maximum height error ($\ell_\infty(h)$)
+\\
+\includegraphics[width=0.49\linewidth]{links/TC2+l2h.pdf}
+&
+\includegraphics[width=0.49\linewidth]{links/TC2+linfh.pdf}
+\end{tabular}
+
+Results from Thuburn, Cotter and Weller
+
+\end{frame}
+
+ 
+\makeatletter{}\begin{frame}
+\frametitle{Extension of C-grid to 3D non-orthogonal grids}
+
+\begin{minipage}[c]{0.6\columnwidth}Following Thuburn and Cotter 2012:
+\[
+U=HV
+\]
+where
+\begin{tabular}{c}
+$U=h\ell\mathbf{u}\cdot\mathbf{n}$\tabularnewline
+$V=d\mathbf{u}\cdot\mathbf{m}$\tabularnewline
+\end{tabular}\end{minipage}\textbf{\hfill{}}\begin{minipage}[c]{0.38\columnwidth}\makeatletter{}\begin{picture}(0,0)\includegraphics{figs/geometry.pdf}\end{picture}\setlength{\unitlength}{1036sp}\begingroup\makeatletter\ifx\SetFigFont\undefined\gdef\SetFigFont#1#2#3#4#5{  \reset@font\fontsize{#1}{#2pt}  \fontfamily{#3}\fontseries{#4}\fontshape{#5}  \selectfont}\fi\endgroup\begin{picture}(6459,4084)(349,-6373)
+\put(2956,-4216){\makebox(0,0)[lb]{\smash{{\SetFigFont{6}{7.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$\ell$}}}}}
+\put(3586,-4021){\makebox(0,0)[lb]{\smash{{\SetFigFont{6}{7.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$d$}}}}}
+\put(1231,-4681){\makebox(0,0)[lb]{\smash{{\SetFigFont{6}{7.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$h$}}}}}
+\put(1231,-5461){\makebox(0,0)[lb]{\smash{{\SetFigFont{6}{7.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$\mathbf{m}$}}}}}
+\put(2161,-6061){\makebox(0,0)[lb]{\smash{{\SetFigFont{6}{7.2}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$\mathbf{n}$}}}}}
+\end{picture} 
+\end{minipage}
+\pause
+\begin{itemize}[<+->]
+\item For mimetic properties, $H$ must be symmetric and positive definite. 
+\item Additional desirable property:
+\begin{itemize}
+\item As $\mathbf{n}\cdot\mathbf{m}\rightarrow1$ locally, $H_{ij}\rightarrow\begin{cases}
+\frac{h\ell}{d} & \text{when }i=j\\
+0 & \text{otherwise }
+\end{cases}$
+\item Not possible for a symmetric $H$ unless $\mathbf{n}\cdot\mathbf{m}$
+is globally uniform.
+\item $\therefore$ use an asymmetric $H$
+\end{itemize}
+\item $H_{ij}\ne0$ for $i\ne j$ when $\mathbf{n}\cdot\mathbf{m}=1$ could
+be problematic in the vertical (large stencil for no additional accuracy)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{$H$ operator}
+
+\textbf{Dubos/Thuburn $H$ (symmetric):}
+\[
+U_{e}=H(V_{e})=\sum_{e^{\prime}\left(\ne e\right)}\frac{1}{f_{e^{\prime}}}\frac{\left(V_{e}\mathbf{d}_{e^{\prime}}-V_{e^{\prime}}\mathbf{d}_{e}\right)\cdot\mathbf{d}_{e^{\prime}}}{|\mathbf{d}_{e}\times\mathbf{d}_{e^{\prime}}|}
+\]
+{\small where $\mathbf{d}_{e}=d_{e}\mathbf{m}_{e}$ for edges, $e^{\prime}$
+around the two dual cells neighbouring $e$.}
+
+
+\pause
+\textbf{Asymmetric $H$ }with $H_{ij}=0$ for $i\ne j$ when $\mathbf{n}\cdot\mathbf{m}=1$
+(in 2D or 3D):
+\begin{itemize}[<+->]
+\item First reconstruct dual cell velocity:
+\[
+\mathbf{u}_{v}=T_{v}^{-1}\sum_{e\in EC(v)}\mathbf{m}_{e}V_{e}\ \text{ where }T_{v}=\sum_{e\in EC(v)}d_{e}\mathbf{m}_{e}\mathbf{m}_{e}.
+\]
+This least squares fit reconstructs a uniform velocity field exactly. 
+\item Next interpolate $\mathbf{u}_{v}$ onto faces between dual cells to
+give $\mathbf{u_{e}^{\prime}}$\\
+and correct to give $V_{e}=d_{e}\mathbf{u}_{e}\cdot\mathbf{m}_{e}$
+exactly at the central edge:
+\[
+\mathbf{\mathbf{u}}_{e}=V_{e}/d_{e}\mathbf{m}_{e}+\mathbf{u}_{e}^{\prime}-\left(\mathbf{u}_{e}^{\prime}\cdot\mathbf{m}_{e}\right)\mathbf{m}_{e}
+\]
+
+\item 
+Hence: $U_{e}  =h\ell\mathbf{u}_{e}\cdot\mathbf{n}_{e}
+ =h\ell/d_{e}\mathbf{m}_{e}\cdot\mathbf{n}_{e}V_{e}+h\ell\mathbf{u}_{e}^{\prime}\cdot\left(\mathbf{n}_{e}-\mathbf{m}_{e}\left(\mathbf{m}_{e}\cdot\mathbf{n}_{e}\right)\right)$.\\
+So  no non-orthogonal correction when $\mathbf{n}\cdot\mathbf{m}=1$
+as required.
+\end{itemize}
+
+\end{frame}
+ 
+\makeatletter{}\begin{frame}
+\frametitle{A New Diamond Grid}
+
+\begin{tabular}{cc}
+Cubed sphere & Diamond grid\\
+\includegraphics[width=0.48\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_cube_6x6_eq_constant_orthogonality}
+&
+\includegraphics[width=0.48\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_diamondCube_6x6_eq_constant_orthogonality}
+\\
+\multicolumn{2}{c}{
+\includegraphics[width=0.6\linewidth]
+    {\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_HRbucky_legends_orthogonality}
+non-orthogonality (degrees)}\\
+\multicolumn{2}{c}{
+\includegraphics[width=0.6\linewidth]
+    {\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_HRbucky_legends_skewness}
+skewness}\\
+\end{tabular}
+
+
+\end{frame}
+ 
+\makeatletter{}\begin{frame}
+\frametitle{Solid Body Rotation Errors after 5 days -- Asymmetric $H$}
+
+\begin{minipage}{0.32\linewidth}\centering
+Hexagonal \\ 2,562 cells\\10,242 dofs\\
+\includegraphics[width=1.6\linewidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_HRbucky_5_save_dt1800_asymmetricH_CLUSTPV_CLUSTh_432000_hUdiff.png}
+\end{minipage}
+\only<2-3>{
+\begin{minipage}{0.32\linewidth}\centering
+Cubed sphere\\
+3,456 cells\\
+10,368 dofs\\
+\includegraphics[width=1.6\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_cube_24x24_eq_save_dt1800_asymmetricH_CLUSTPV_CLUSTh_432000_hUdiff}
+\end{minipage}}
+\only<3>{
+\begin{minipage}{0.32\linewidth}\centering
+Diamond grid \\
+3,468 cells\\
+10,404 dofs
+\includegraphics[width=1.6\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_diamondCube_17x17_eq_save_dt1800_asymmetricH_CLUSTPV_CLUSTh_432000_hUdiff}
+\end{minipage}
+}
+\includegraphics[width=0.8\linewidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_HRbucky_legends_hUdiff_hDiff}m
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Solid Body Rotation Errors after 5 days -- Symmetric $H$}
+
+\begin{minipage}{0.32\linewidth}\centering
+Hexagonal \\ 2,562 cells\\10,242 dofs\\
+\includegraphics[width=1.6\linewidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_HRbucky_5_save_dt1800_DubosH_CLUSTPV_CLUSTh_432000_hUdiff.png}
+\end{minipage}
+\begin{minipage}{0.32\linewidth}\centering
+Cubed sphere\\
+3,456 cells\\
+10,368 dofs\\
+\includegraphics[width=1.6\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_cube_24x24_eq_save_dt1800_DubosH_CLUSTPV_CLUSTh_432000_hUdiff}
+\end{minipage}
+\begin{minipage}{0.32\linewidth}\centering
+Diamond grid \\
+3,468 cells\\
+10,404 dofs
+\includegraphics[width=1.6\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_diamondCube_17x17_eq_save_dt1800_DubosH_CLUSTPV_CLUSTh_432000_hUdiff}
+\end{minipage}
+
+\includegraphics[width=0.8\linewidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_HRbucky_legends_hUdiff_hDiff}m
+\end{frame}
+
+\begin{frame}
+\frametitle{Flow over a mid-latitude mountain}
+\framesubtitle{Diamond Grid, asymmetric $H$}
+
+\animategraphics[width=\textwidth,palindrome]{10}
+{\RUNWM/WilliMountain/diamondCube/48x48_eq/save/dt225_asymmetricH_CLUSTPV_CLUSTh_2/animation/lowRes/vorticity}{0}{100}\\
+\includegraphics[width=\textwidth]
+{\RUNWM/WilliMountain/diamondCube/48x48_eq/save/dt225_asymmetricH_CLUSTPV_CLUSTh_2/legends/vorticity.pdf}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Flow over a mid-latitude mountain -- Asymmetric $H$}
+\framesubtitle{Geopotential height errors as a function of resolution}
+
+\begin{tabular}{cc}
+RMS error ($\ell_2(h)$) & Max error ($\ell_\infty(h)$) \\
+\includegraphics[width=0.48\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliMountain_comparePlots_l2h_dofs_asymmetricH_CLUSTPV_CLUSTh.pdf}
+&
+\includegraphics[width=0.48\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliMountain_comparePlots_lih_dofs_asymmetricH_CLUSTPV_CLUSTh.pdf}
+\end{tabular}
+
+\end{frame}
+
+
+ 
+\makeatletter{}\begin{frame}
+
+\begin{tabular}{l|l|l}
+ & {\bf Finite Volume C-grid} & {\bf Mixed Finite Element} \\
+\hline
+Cost & All local operations & Invert global mass matrix \\
+\hline
+Order of accruacy & 0-2 & 2-3 \\
+\hline
+Accuracy on test & \multicolumn{2}{c}{similar} \\
+cases \\
+\hline
+Accuracy on multi- & loses accuracy? & maintains accuracy? \\
+-resolution meshes & requires a slowly \\
+ & varying mesh
+\end{tabular}
+
+Can we create useful multi-resolution meshes for FV C-grid and maintain accuracy?
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Multi-resolution meshes for FV C-grid}
+
+\begin{minipage}[b]{0.48\linewidth}
+\centering\small
+\ \\ Hexagonal Icosahedron (642 cells)\\
+\includegraphics[width=\linewidth]
+{links/shallowWaterSphere+WilliMountain+bisect+4+0+mesh.pdf}
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
+\centering\small
+Lloyd's algorithm (Ringler et al) (Expensive) (642 cells)\\
+\includegraphics[width=\linewidth]
+{links/shallowWaterSphere+WilliMountain+Lloyd+4x2+0+mesh.pdf}
+\end{minipage}
+\pause
+\begin{minipage}{0.48\linewidth}
+\centering\small
+Add points and smooth {\tiny(Sean Cavany, following Walko and Avissar)} (802 cells)\\
+\includegraphics[width=\linewidth]
+{links/shallowWaterSphere+WilliMountain+Walko+4x2+0+mesh.pdf}
+\end{minipage}
+\pause
+\begin{minipage}{0.48\linewidth}
+\centering\small
+Solve Parabolic Monge-Ampere equation (Phil Browne) (642 cells) \\
+\includegraphics[width=\linewidth]
+{links/shallowWaterSphere+WilliMountain+PMA+4x2+0+mesh.pdf}
+\end{minipage}
+\end{frame}
+
+\begin{frame}
+\frametitle{Mesh generation by solving the Parabolic\\
+Monge-Ampere Equation on the sphere}
+
+\begin{tabular}{ll}
+$\mathbf{x}$ & location of point on uniform mesh\\
+$\mathbf{\eta}$ & location of point on multiresolution mesh\\
+\end{tabular}\\
+Find mesh potential, $P$, such that:
+\begin{equation*}
+\eta = \mathbf{x} + \nabla P.
+\end{equation*}
+Work of Chris Budd, Emily Walsh, Phil Browne (Bath)\\
+Find $P$ by solving the parabolic Monge-Ampere equation:\\
+\begin{equation*}
+\frac{\partial P}{\partial t} = \biggl(M(\nabla P) |H(P)|\biggr)^\half
+\end{equation*}
+where $M$ is the user defined monitor function (contols mesh spacing)\\
+and $H$ is the Hessian of $P$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Flow over a mid-latitude mountain}
+\framesubtitle{With coarse multiresolution grids, factor of 2 finer around the mountain}
+
+\begin{minipage}{0.48\linewidth}
+Uniform grid, 642 cells \\
+\includegraphics[width=\linewidth]{links/shallowWaterSphere+WilliMountain+bisect+4+save+dt1800_asymmetricH_CLUSTPV_CLUSTh+1296000+hError200.png}
+\end{minipage}
+\visible<2->{
+\begin{minipage}{0.48\linewidth}
+Lloyd's algorithm, 642 cells \\
+\includegraphics[width=\linewidth]{links/shallowWaterSphere+WilliMountain+Lloyd+4x2+save+dt1800_asymmetricH_CLUSTPV_CLUSTh+1296000+hError200.png}
+\end{minipage}}
+\visible<3->{
+\begin{minipage}{0.48\linewidth}
+Add points, 802 cells \\
+\includegraphics[width=\linewidth]{links/shallowWaterSphere+WilliMountain+Walko+4x2+save+dt1800_asymmetricH_CLUSTPV_CLUSTh+1296000+hError200.png}
+\end{minipage}}
+\visible<4>{
+\begin{minipage}{0.48\linewidth}
+PMA, 642 cells \\
+\includegraphics[width=\linewidth]{links/shallowWaterSphere+WilliMountain+PMA+4x2+save+dt1800_asymmetricH_CLUSTPV_CLUSTh+1296000+hError200.png}
+\end{minipage}}
+
+\includegraphics[width=0.7\linewidth]{links/shallowWaterSphere+WilliMountain+legends+hError200_hError.pdf}  \hfill height error (m)
+\end{frame}
+ 
+\makeatletter{}\begin{frame}
+\frametitle{Conclusions}
+
+\begin{itemize}[<+->]
+
+\item C-grid on a hexagonal-icosahedron is very low accurate in theory (sometimes zeroth order)
+
+\item BUT results of shallow-water test cases are very accurate using C-grid in comparison to more expensive finite element discretisations
+
+\item Computational modes of hexagonal C-grid contolled using CLUST
+
+\item New more accurate non-orthogonal C-grid proposed
+
+\item Diamond grid more orthogonal than cubed sphere
+
+\item Asymmetric non-orthogonal correction more accurate that symmetric correction despite formal loss of energy conservation
+
+\item Sufficiently smooth multi-resolution meshes can be gerated much more cheaply than have previously been done
+
+\item Gradual mesh refinement can lead to improved accuracy
+
+\end{itemize}
+
+\end{frame}
+
+ 
+
+\end{document}

@@ -1,0 +1,24 @@
+#!/bin/bash -e
+
+sed 's/_STUDENTVERSION_//g' lecturenotes.tmp \
+    > lecturenotes.sty
+pdflatex Weller_ClimSS.tex
+pdflatex Weller_ClimSS.tex
+cp Weller_ClimSS.pdf standAlone/Weller_ClimSS_lec.pdf
+
+sed 's/_STUDENTVERSION_/\\studentversion/g' lecturenotes.tmp \
+    > lecturenotes.sty
+pdflatex Weller_ClimSS.tex
+pdflatex Weller_ClimSS.tex
+cp Weller_ClimSS.pdf standAlone/Weller_ClimSS_student.pdf
+
+evince standAlone/Weller_ClimSS_lec.pdf
+mv ~/Documents/output.pdf standAlone/Weller_ClimSS_1_lec.pdf
+evince standAlone/Weller_ClimSS_student.pdf
+mv ~/Documents/output.pdf standAlone/Weller_ClimSS_1_student.pdf
+
+pdfjam --nup 1x2 --a4paper standAlone/Weller_ClimSS_1_lec.pdf --outfile standAlone/Weller_ClimSS_2_lec.pdf
+pdfjam --nup 1x2 --a4paper standAlone/Weller_ClimSS_1_student.pdf --outfile standAlone/Weller_ClimSS_2_student.pdf
+
+rm standAlone/Weller_ClimSS_1_lec.pdf standAlone/Weller_ClimSS_1_student.pdf
+

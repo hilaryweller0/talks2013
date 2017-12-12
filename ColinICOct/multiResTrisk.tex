@@ -1,0 +1,80 @@
+\begin{frame}
+\frametitle{Multi-resolution meshes for FV C-grid}
+\framesubtitle{Can we create useful multi-resolution meshes for FV C-grid and maintain accuracy?}
+
+\begin{minipage}[b]{0.48\linewidth}
+\centering\small
+\ \\ Hexagonal Icosahedron (642 cells)\\
+\includegraphics[width=\linewidth]
+{links/WilliMountain+bisect+4+0+mesh.pdf}
+\end{minipage}
+\begin{minipage}[b]{0.48\linewidth}
+\centering\small
+Lloyd's algorithm (Ringler et al) (Expensive) (642 cells)\\
+\includegraphics[width=\linewidth]
+{links/WilliMountain+Lloyd+4x2+0+mesh.pdf}
+\end{minipage}
+\pause
+\begin{minipage}{0.48\linewidth}
+\centering\small
+Add points and smooth {\tiny(Sean Cavany, following Walko and Avissar)} (802 cells)\\
+\includegraphics[width=\linewidth]
+{links/WilliMountain+Walko+4x2+0+mesh.pdf}
+\end{minipage}
+\pause
+\begin{minipage}{0.48\linewidth}
+\centering\small
+Solve Parabolic Monge-Ampere equation (Phil Browne) (642 cells) \\
+\includegraphics[width=\linewidth]
+{links/WilliMountain+PMA+4x2+0+mesh.pdf}
+\end{minipage}
+\end{frame}
+
+\begin{frame}
+\frametitle{Mesh generation by solving the Parabolic\\
+Monge-Ampere Equation on the sphere}
+
+\begin{tabular}{ll}
+$\mathbf{x}$ & location of point on uniform mesh\\
+$\mathbf{\eta}$ & location of point on multiresolution mesh\\
+\end{tabular}\\
+Find mesh potential, $P$, such that:
+\begin{equation*}
+\eta = \mathbf{x} + \nabla P.
+\end{equation*}
+Work of Chris Budd, Emily Walsh, Phil Browne (Bath)\\
+Find $P$ by solving the parabolic Monge-Ampere equation:\\
+\begin{equation*}
+\frac{\partial P}{\partial t} = \biggl(M(\nabla P) |H(P)|\biggr)^\half
+\end{equation*}
+where $M$ is the user defined monitor function (contols mesh spacing)\\
+and $H$ is the Hessian of $P$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Flow over a mid-latitude mountain}
+\framesubtitle{With coarse multiresolution grids, factor of 2 finer around the mountain}
+
+\begin{minipage}{0.48\linewidth}
+Uniform grid, 642 cells \\
+\includegraphics[width=\linewidth]{links/WilliMountain+bisect+4+save+dt1800_asymmetricH_CLUSTPV_CLUSTh+1296000+hError200.png}
+\end{minipage}
+\visible<2->{
+\begin{minipage}{0.48\linewidth}
+Lloyd's algorithm, 642 cells \\
+\includegraphics[width=\linewidth]{links/WilliMountain+Lloyd+4x2+save+dt1800_asymmetricH_CLUSTPV_CLUSTh+1296000+hError200.png}
+\end{minipage}}
+\visible<3->{
+\begin{minipage}{0.48\linewidth}
+Add points, 802 cells \\
+\includegraphics[width=\linewidth]{links/WilliMountain+Walko+4x2+save+dt1800_asymmetricH_CLUSTPV_CLUSTh+1296000+hError200.png}
+\end{minipage}}
+\visible<4>{
+\begin{minipage}{0.48\linewidth}
+PMA, 642 cells \\
+\includegraphics[width=\linewidth]{links/WilliMountain+PMA+4x2+save+dt1800_asymmetricH_CLUSTPV_CLUSTh+1296000+hError200.png}
+\end{minipage}}
+
+\includegraphics[width=0.7\linewidth]{links/WilliMountain+legends+hError200_hError.pdf}  \hfill height error (m)
+\end{frame}

@@ -1,0 +1,26 @@
+\begin{slide}
+\heading{TRiSK: C-grid on arbitrary grids of the sphere}
+
+Thuburn, Ringler, Skamarock and Klemp, JCP, 2009
+
+\begin{list0}
+\item Method of reconstructing tangential velocity on a face from surrounding normal components on any grid
+\item Mimetic properties:
+    \begin{list1}
+    \item Maintains stationary geostrophic balance\\
+        (since divergence on dual = divergence on primal)
+    \item Conserves energy
+    \item Conserves potential vorticity
+    \end{list1}
+\item Currently low order accurate (0-2)
+\end{list0}
+
+\begin{minipage}{0.4\linewidth}
+\includegraphics[width=\linewidth]{graphics/TRiSK.pdf}
+\end{minipage}
+\begin{minipage}{0.49\linewidth}\centering
+TRiSK defines weights, $w_i$ for:
+\[v = \sum_i w_i u_i\]
+\end{minipage}
+\end{slide}
+

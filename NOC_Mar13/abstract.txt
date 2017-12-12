@@ -1,0 +1,5 @@
+Atmospheric Modelling on Arbitrary Grids
+
+Hilary Weller (University of Reading)
+
+The UK Met Office atmosphere model is one of the most accurate and efficient in the world. However this current optimal model is achieved using algorithms which require heavy communication over long distances, such as semi-Lagrangian on a latitude-longitude grid and semi-implicit time-stepping. This communication limits scalability on massively parallel computers which will are becoming common-place. I will talk a little about the Gung Ho project with the Met Office to design and build a new atmospheric model on an alternative grid, about some of the algorithms that have been considered and some of the problems encountered. I will also talk about multi-resolution meshes as an alternative to one-way nesting in order to achieve high resolution for local area forecasts.

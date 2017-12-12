@@ -1,0 +1,113 @@
+\begin{slide}
+\heading{Fully compressible, semi-implicit solution in 3D}
+
+\begin{list0}
+\item 
+    Thermodynamic variables, $\theta = T\bigl(\hfrac{p_0}{p}\bigl)^\kappa$ and ${\color{purple}\Pi} = \bigl(\hfrac{p}{p_0}\bigl)^\kappa$\pauseHS
+
+\item
+    Solve Helmholtz equation for ${\color{purple}\Pi}$\pauseHS
+\item
+    First express $\color{red}\rho\mathbf{u}$, as a function of $\color{purple}\Pi$ using the momentum equation:
+
+${\color{red} (\rho\mathbf{u})^{n+1}} = 
+\underbrace{
+    (\rho\mathbf{u})^n - \Delta t
+    \bigl(
+        \nabla\dprod\rho\mathbf{uu} + 2\rho\Omega\times\vec{u}
+        - \rho\vec{g}
+    }_{\mathbf{H}}
+     + \rho c_p \theta{\color{purple} \nabla \Pi}
+\bigr)$\pauseHS
+
+\item
+${\color{red} (\rho\mathbf{u})^{n+1}}$ is substituted into the continuity equation,
+$\frac{\partial\rho}{\partial t} + \nabla\cdot({\color{red}\rho\mathbf{u}})=0$\pauseHS
+
+\item
+    We $\therefore$ also need to replace $\rho$ by $\color{purple}\Pi$ using a linearised equation of state:\\
+{\color{blue}\em novel:}\vspace{1cm}
+$\rho=
+\biggl(
+    \frac{p_{0}\Pi^\frac{c_v}{R}}{RT}
+\biggr)^\ell
+\ {\color{purple}\Pi}=\psi^\ell\ {\color{purple}\Pi}$\\
+where $\ell$ means {}``lagged'' (from
+previous iteration) and $\hfrac{c_v}{R}\approx 2.5$\pauseHS
+
+\item
+    Substitute $\color{red}\rho\mathbf{u}$ and $\rho$ into continuity equation:\\
+$
+\frac{\partial\psi^\ell{\color{purple}\Pi}}{\partial t}
++\nabla\cdot\mathbf{H}^\ell - \nabla\cdot\Delta t\rho c_p\theta\nabla{\color{purple}\Pi}=0
+$\pauseHS
+
+\item
+This ensures mass conservation regardless of level of convergence
+\end{list0}
+\end{slide}
+
+\begin{slide}
+\subheading{Also need implicit treatment of gravity waves\pauseHS}
+
+\begin{list0}\raggedright
+\item Linearise pressure gradient term of momentum equation:
+\begin{align*}
+{\color{red} (\rho\mathbf{u})^{n+1}} &=
+\mathbf{H}
+- \Delta t c_p \rho {\color{blue}\theta^{n+1}}{\color{purple} \nabla \Pi^{n+1}}\\
+&=\mathbf{H}
+- \Delta t c_p \rho {\color{blue}(\theta^\ell+\theta^\prime)}{\color{purple}
+\nabla (\Pi^\ell + \Pi^\prime)}\\
+&\approx \mathbf{H}
+- \Delta t c_p \rho ({\color{blue}\theta^\ell}{\color{purple}
+\nabla \Pi^{n+1}} + {\color{blue}\theta^\prime}{\color{purple}
+\nabla \Pi^\ell})\pauseHS
+\end{align*}
+\item Substitute $\color{blue}\theta^\prime$ from energy equation:
+\[
+{\color{blue}\theta^{n+1} = \theta^\ell+\theta^\prime}
+= \theta^n
+- \mathbf{u}^{n+1}\cdot\nabla\theta^\ell \pauseHS
+\]
+\item After much manipulation this leads to
+\begin{align*}
+{\color{red}(\rho\mathbf{u})^{n+1}} &= 
+G\bigl(
+    \mathbf{H}_2
+  - \Delta t c_p \rho^\ell\theta^\ell\nabla\Pi^{n+1}
+\bigr)
+\\
+\text{where } G &= 1/(1-\Delta t^2 c_p \nabla_n\theta^\ell \nabla_n\Pi^\ell)
+\end{align*}
+\[
+_{
+\mathbf{H}_2 = (\rho\mathbf{u})^n- \Delta t
+\bigl(
+    \nabla\cdot(\rho\mathbf{uu}) + 2\rho\Omega\times\mathbf{u}
+  - \rho\mathbf{g}
+  + c_p\rho^\ell(\theta^n-\theta^\ell)\nabla\Pi^\ell
+  -\Delta t c_p \rho^\ell \mathbf{u}^\ell\cdot\nabla_p\theta^\ell
+  \nabla\Pi^\ell
+\bigr)}\pauseHS
+\]
+\item Substitute into continuity equation to give new Helmholtz equation
+\[
+\frac{\partial\psi^\ell{\color{purple}\Pi}}{\partial t}
++\nabla\cdot G\mathbf{H}_2^\ell - \nabla\cdot G\Delta t c_p \rho^\ell \theta^\ell\nabla{\color{purple}\Pi^{n+1}}=0
+\]
+\end{list0}
+\end{slide}
+
+\begin{slide}
+\heading{Fully compressible, semi-implicit solution in 3D}
+
+\begin{list0}
+\item Initial tests show that this new linearisation is stable and conservative for strong and weakly stratified flow
+\item But are the results accurate?
+\item Does it converge fast enough?
+\item Can it be done better?
+\end{list0}
+
+\end{slide}
+

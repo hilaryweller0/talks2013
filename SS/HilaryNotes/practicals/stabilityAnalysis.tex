@@ -1,0 +1,34 @@
+\subsection{Practical: Stability Analysis}
+
+\begin{enumerate}
+\item The magnitude of the amplification factor for FTBS is given by:
+\[
+|A|^2 = 1 -2c(1-c)(1-\cos k\Delta x).
+\]
+For a Courant number, $c=0.2$, plot (or sketch) $|A|^2$ as a function of $k\Delta x$. Hence say if long wavelengths or short wavelengths will be damped more. (For the plotting, you could start from the code in \url{pythonExamples/advection/CTCSstabilityAnalysis.py}.)
+
+\optparagraph{Short wavelengths are damped more}
+
+\item Derive an expression for the amplification factor, $A$, for either FTCS or CTBS.
+\\ \optparagraph{
+\begin{tabular}{ll}
+FTCS & $A = 1 - ic\sin k\Delta x$ \\
+CTBS & $A^2 + 2cA(1 - \cos k\Delta x + i\sin k\Delta x) - 1 = 0$ \\
+     & $\implies A = -c(1 - \cos k\Delta x + i\sin k\Delta x) \pm
+       \sqrt{1+c^2(1 - \cos k\Delta x + i\sin k\Delta x)^2}$
+\end{tabular}
+}
+\item Only for FTCS, write down the square of the magnitude of the amplification factor by multiplying $A$ by its complex conjugate ($|A|^2= A A^* = (a+ib)(a-ib)$ for $A=a+ib$).
+\\ \optparagraph{
+\begin{tabular}{ll}
+FTCS & $|A|^2 = 1 + c^2\sin^2 k\Delta x$ \\
+\end{tabular}
+}
+
+\item Either work out mathematically for what values of $c$ the scheme will be stable or plot $|A|^2$ as a function of $c$ for a fixed value of $k\Delta x$. An example of how to do this with python can be found in \url{pythonExamples/advection/CTCSstabilityAnalysis.py}.
+\\ \optparagraph{FTCS and CTBS are both unconditionally unstable (unstable for all time-steps)}
+
+\item For a fixed Courant number of $c=0.2$, plot $|A|^2$ as a function of $k\Delta x$. Will short or long waves be more unstable?
+\\ \opttext{Poorly resolved, short wavelengths will be more unstable}
+\end{enumerate}
+

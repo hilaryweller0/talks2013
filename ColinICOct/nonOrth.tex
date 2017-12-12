@@ -1,0 +1,71 @@
+\begin{frame}
+\frametitle{Extension of C-grid to 3D non-orthogonal grids}
+
+\begin{minipage}[c]{0.6\columnwidth}%
+Following \cite*{TC12}, \cite*{TCD1x}
+\[
+U=HV
+\]
+where
+\begin{tabular}{c}
+$U=h\ell\mathbf{u}\cdot\mathbf{n}$\tabularnewline
+$V=d\mathbf{u}\cdot\mathbf{m}$\tabularnewline
+\end{tabular}%
+\end{minipage}\textbf{\hfill{}}%
+\begin{minipage}[c]{0.38\columnwidth}%
+\input{figs/geometry.pdf_t}%
+\end{minipage}
+\pause
+\begin{itemize}[<+->]
+\item For mimetic properties, $H$ must be symmetric and positive definite. 
+\item Additional desirable property:
+\begin{itemize}
+\item As $\mathbf{n}\cdot\mathbf{m}\rightarrow1$ locally, $H_{ij}\rightarrow\begin{cases}
+\frac{h\ell}{d} & \text{when }i=j\\
+0 & \text{otherwise }
+\end{cases}$
+\item Not possible for a symmetric $H$ unless $\mathbf{n}\cdot\mathbf{m}$
+is globally uniform.
+\item $\therefore$ use an asymmetric $H$
+\end{itemize}
+\item $H_{ij}\ne0$ for $i\ne j$ when $\mathbf{n}\cdot\mathbf{m}=1$ could
+be problematic in the vertical (large stencil for no additional accuracy)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{$H$ operator}
+
+\textbf{Symmetric} \citep*{TCD1x}
+\[
+U_{e}=H(V_{e})=\sum_{e^{\prime}\left(\ne e\right)}\frac{1}{f_{e^{\prime}}}\frac{\left(V_{e}\mathbf{d}_{e^{\prime}}-V_{e^{\prime}}\mathbf{d}_{e}\right)\cdot\mathbf{d}_{e^{\prime}}}{|\mathbf{d}_{e}\times\mathbf{d}_{e^{\prime}}|}
+\]
+{\small where $\mathbf{d}_{e}=d_{e}\mathbf{m}_{e}$ for edges, $e^{\prime}$
+around the two dual cells neighbouring $e$.}
+
+
+\pause
+\textbf{Asymmetric $H$ }with $H_{ij}=0$ for $i\ne j$ when $\mathbf{n}\cdot\mathbf{m}=1$
+(in 2D or 3D):
+\begin{itemize}[<+->]
+\item First reconstruct dual cell velocity:
+\[
+\mathbf{u}_{v}=T_{v}^{-1}\sum_{e\in EC(v)}\mathbf{m}_{e}V_{e}\ \text{ where }T_{v}=\sum_{e\in EC(v)}d_{e}\mathbf{m}_{e}\mathbf{m}_{e}.
+\]
+This least squares fit reconstructs a uniform velocity field exactly. 
+\item Next interpolate $\mathbf{u}_{v}$ onto faces between dual cells to
+give $\mathbf{u_{e}^{\prime}}$\\
+and correct to give $V_{e}=d_{e}\mathbf{u}_{e}\cdot\mathbf{m}_{e}$
+exactly at the central edge:
+\[
+\mathbf{\mathbf{u}}_{e}=V_{e}/d_{e}\mathbf{m}_{e}+\mathbf{u}_{e}^{\prime}-\left(\mathbf{u}_{e}^{\prime}\cdot\mathbf{m}_{e}\right)\mathbf{m}_{e}
+\]
+
+\item 
+Hence: $U_{e}  =h\ell\mathbf{u}_{e}\cdot\mathbf{n}_{e}
+ =h\ell/d_{e}\mathbf{m}_{e}\cdot\mathbf{n}_{e}V_{e}+h\ell\mathbf{u}_{e}^{\prime}\cdot\left(\mathbf{n}_{e}-\mathbf{m}_{e}\left(\mathbf{m}_{e}\cdot\mathbf{n}_{e}\right)\right)$.\\
+So  no non-orthogonal correction when $\mathbf{n}\cdot\mathbf{m}=1$
+as required.
+\end{itemize}
+
+\end{frame}

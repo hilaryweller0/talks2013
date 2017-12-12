@@ -1,0 +1,73 @@
+\chapter{Time-Stepping}
+
+\section{Some Time-Stepping Schemes}
+
+Some common time-stepping schemes for solving the ODE:
+\begin{equation*}
+\frac{dy}{dt}=F(y)
+\end{equation*}
+are defined:
+
+\begin{tabular}{lc|c|c}
+& & Explicit/ & Order of \\
+&& Implicit & accuracy \\
+Forward Euler & $y^{(n+1)} = y^{(n)} + \Delta t F(y^{(n)})$&\\ &&&\\ \hline
+Backward Euler & $y^{(n+1)} = y^{(n)} + \Delta t F(y^{(n+1)})$&\\ &&&\\ \hline
+Trapezoidal &  $\frac{y^{(n+1)} - y^{(n)}}{\Delta t} = \frac{1}{2}\bigl(F(y^{(n)}) +  F(y^{(n+1)}) \bigr)$&\\ &&&\\ \hline
+Forward-backward & $y^\prime = y^{(n)} + \Delta t F(y^{(n)})$&\\
+                 & $y^{(n+1)} = y^{(n)} + \Delta t F(y^\prime)$&\\
+\hline
+Leapfrog & $y^{(n+1)} = y^{(n-1)} + 2\Delta t F(y^{(n)})$&\\ &&&\\
+\end{tabular}
+
+Explicit time-stepping schemes use values available entirely from previous time-steps to define the values at the new time-level ($n+1$). Implicit schemes use the values at time level $n+1$ to define the values at time level $n+1$. This means that, to find the solution at time $n+1$, a matrix equation must be solved which can be expensive. 
+
+{\color{blue}Fill in the table}
+
+\section{Semi-implicit time-stepping}
+
+Explicit time-stepping schemes generally have time-step restrictions such that the solution diverges if the time-step is too big. Additionally the solution becomes inaccurate if the time-step is too big. Implicit time-stepping schemes are designed not to have time-step restrictions but the solution will still be inaccurate if the time-step is large. For simulating advection, we generally want the solution to have good temporal resolution so we want to use a small time-step so we might as well use an explicit scheme. However acoustic waves are very fast ($\approx 340$m/s) and have very little influence on the weather. Similarly there are some very fast gravity waves ($\approx 300$m/s). Explicit methods to solve diffusion terms also lead to severe time-step restrictions. For these reasons, often acoustic and gravity waves are treated implicitly in a model of the global atmosphere and advection and the Coriolis are treated explicitly. 
+
+For example, a semi-implicit solution of the shallow-water equation might be:
+
+\begin{align}
+\frac{\mathbf{u}^{(n+1)}-\mathbf{u}^{(n)}}{\Delta t} + \mathbf{u}^{(\opttext{n\ \ })}\cdot\nabla\mathbf{u}^{(\opttext{n\ \ })}&= 
+-2\Omega\times\mathbf{u}^{(\opttext{n\ \ })} - g \nabla h^{(\opttext{n+1})}
+\label{eqn:SWEuvtime}\\
+\frac{h^{(n+1)} - h^{(n)}}{\Delta t} + \mathbf{u}^{(\opttext{n\ \ })}\cdot\nabla h^{(\opttext{n\ \ })} &= -h^{(\opttext{n\ \ })}\nabla\cdot\mathbf{u}^{(\opttext{n+1})}
+\label{eqn:SWEhtime}
+\end{align}
+This is solved by rearranging equation \ref{eqn:SWEuvtime} for $u^{(n+1)}$ and substituting these into equation \ref{eqn:SWEhtime}. This leads to a discretised version of the wave equation (\ref{eqn:waveh}) or Helmholtz equation which can be solved for $h^{(n+1)}$.
+\begin{align*}
+\mathbf{u}^{(n+1)} &= 
+\opttext{
+\mathbf{u}^{(n)} - \Delta t \bigl(\mathbf{u}^{(n)}\cdot\nabla\mathbf{u}^{(n)} 
++2\Omega\times\mathbf{u}^{(n)} + g \nabla h^{(n+1)}
+\bigr)}
+\end{align*}
+\begin{align*}
+\implies&
+\frac{h^{(n+1)} - h^{(n)}}{\Delta t} + \mathbf{u}^{(n)}\cdot\nabla h^{(n)} \\
+&= -h^{(n)}\nabla\cdot\biggr(
+\opttext{
+\mathbf{u}^{(n)} - \Delta t \bigl(\mathbf{u}^{(n)}\cdot\nabla\mathbf{u}^{(n)} 
++2\Omega\times\mathbf{u}^{(n)} + g \nabla h^{(n+1)}
+\bigr)
+}\biggr)
+\end{align*}
+The terms that make this into a Helmholtz equation are:
+\begin{equation*}
+\frac{h^{(n+1)} - h^{(n)}}{\Delta t} =h^{(n)}\nabla\cdot\biggr(\Delta t g \nabla h^{(n+1)}\biggr)
+\end{equation*}
+which must be solved implicitly since $h^{(n+1)}$ appears on the RHS and LHS.
+
+A similar procedure is used to solve the Navier-Stokes equations in semi-implicit models of the global atmosphere. 
+
+\section{Exercise}
+
+Backward in time, centred in space (BTCS) for the diffusion equation is defined as:
+\begin{equation}
+\frac{\phi^{(n+1)}_j - \phi^{(n)}_j}{\Delta t} -K\frac{\phi^{(n+1)}_{j+1} - 2\phi^{(n+1)}_{j} + \phi^{(n+1)}_{j-1}}{\Delta x^2} = 0.
+\end{equation}
+This is solved by formulating an $N\times N$ matrix to solve where $N$ is the number of grid-points. Write out this scheme as an $N\times N$ matrix equation for the vector of all $\phi_j^{(n+1)}$s in terms of all of the $\phi_j^{(n)}$s. Thus describe how it could be solved. What additional information is needed?
+

@@ -1,0 +1,23 @@
+\subsection{Practical Answers: Numerical Differentiation}
+
+The exact geostrophic wind, the wind from the two-point approximation (question 1), the wind with three-point, second-order approximation at the end points (question 2) and the wind at the mid-points (question 3) are shown in the figure on the left and the errors on the right:
+
+\begin{tabular}{cc}
+Geostrophic wind  & truncation errors \\
+\includegraphics[width=0.49\linewidth]{pythonExamples/geoWind.pdf}
+&
+\includegraphics[width=0.49\linewidth]{pythonExamples/geoWindErrors.pdf}
+\end{tabular}
+
+\begin{enumerate}
+\item Using the two-point differences, the errors are higher at the end-points because the forward and backward difference approximations are only first-order accurate whereas the middle points use centred, second-order approximations.
+
+\item Using 3-point, second-order uncentred differences at the end-points reduces the errors from $\approx$0.18m/s to $\approx$0.0024 at $y=0$ and from $\approx$-0.055m/s to $\approx$0.018m/s at $y=10^6 m$.
+
+\item Using the numerical approximation:
+\[
+p^\prime_{j+\half} = \frac{p_{j+1} - p_{j}}{\Delta y}
+\]
+the errors should be approximately 4 times smaller than using the two-point, second order approximation at the same points where $p$ is defined because the effective resolution is reduced a factor of two and both schemes are 2nd order accurate. This is for about the same computational cost.
+
+\end{enumerate}

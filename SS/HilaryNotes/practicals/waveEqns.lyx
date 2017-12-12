@@ -1,0 +1,360 @@
+#LyX file created by tex2lyx 2.0.8.1
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options false
+\language english
+\language_package none
+\inputencoding auto
+\fontencoding default
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\paperfontsize default
+\spacing single
+\use_hyperref 0
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 0
+\use_mathdots 0
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Subsection
+
+Practical: Solving the Shallow-water Equations
+\end_layout
+
+\begin_layout Standard
+
+Code to solve the linearised shallow-water equations: 
+\begin_inset Formula \begin{align*}
+\frac{\partial u}{\partial t} &= fv - g\frac{\partial}{\partial x}(h+h_0)\\
+\frac{\partial v}{\partial t} &= -fu - g\frac{\partial}{\partial y}(h+h_0)\\
+\frac{\partial h}{\partial t} & + 
+\frac{\partial}{\partial x}\bigl((H-h_0)u\bigr) + \frac{\partial}{\partial y}\bigl((H-h_0)v\bigr)
+ = 0
+\end{align*}
+\end_inset
+
+using the Arakawa A and C-grids are in file 
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+pythonExamples/SWE/*.py
+\end_layout
+
+\end_inset
+
+. 
+\begin_inset Formula $u$
+\end_inset
+
+ and 
+\begin_inset Formula $v$
+\end_inset
+
+ are the velocities in directions 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $y$
+\end_inset
+
+, 
+\begin_inset Formula $f=\beta y$
+\end_inset
+
+ is the Coriolis parameter, 
+\begin_inset Formula $g$
+\end_inset
+
+ is gravity, 
+\begin_inset Formula $h$
+\end_inset
+
+ is the depth anomaly in comparison to the mean depth 
+\begin_inset Formula $H$
+\end_inset
+
+ and 
+\begin_inset Formula $h_0$
+\end_inset
+
+ is the height of the bottom topography. The boundary conditions in the 
+\begin_inset Formula $x$
+\end_inset
+
+ direction are periodic and the the 
+\begin_inset Formula $y$
+\end_inset
+
+ direction the boundary conditions are 
+\begin_inset Formula $v=0$
+\end_inset
+
+ and 
+\begin_inset Formula $\partial h/\partial y=0$
+\end_inset
+
+. In the code in 
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+pythonExamples/SWE/*.py
+\end_layout
+
+\end_inset
+
+, the bottom topography has not been fully implemented. The code is set up to solve a test case with a geostrophically balanced jet described by: 
+\begin_inset Formula \begin{eqnarray*}
+u(\hat{y}) & = & \begin{cases}
+u_m\left(1-3\hat{y}^{2}+3\hat{y}^{4}-\hat{y}^{6}\right) & \text{for }-1\le\hat{y}\le1\\
+0 & \text{otherwise}
+\end{cases}\\
+v & = & 0\\
+\end{eqnarray*}
+\end_inset
+
+
+\begin_inset Formula \begin{eqnarray*}
+h\left(\hat{y}\right) & = & \begin{cases}
+16\ w\beta u_m y_{c}/(35g) & \textnormal{for }\hat{y}\le-1\\
+-w\beta u_m/g\begin{array}[t]{l}
+\bigl\{ y_{c}\left(\hat{y}-\hat{y}^{3}+3\hat{y}^{5}/5-\hat{y}^{7}/7\right)\\
++w\left(-1/8+\hat{y}^{2}/2-3\hat{y}^{4}/4+\hat{y}^{6}/2-\hat{y}^{8}/8\right)\bigr\}
+\end{array} & \textnormal{for }-1\le\hat{y}\le1\\
+-16\ w\beta u_m y_{c}/(35g) & \textnormal{for }\hat{y}\ge1
+\end{cases}
+\end{eqnarray*}
+\end_inset
+
+where 
+\begin_inset Formula $\hat{y}=(y-y_{c})/w$
+\end_inset
+
+, 
+\begin_inset Formula $y_{c}$
+\end_inset
+
+ is the 
+\begin_inset Formula $y$
+\end_inset
+
+ position of the jet centre, 
+\begin_inset Formula $w$
+\end_inset
+
+ is the jet half width, 
+\begin_inset Formula $u_m$
+\end_inset
+
+ is the maximum jet velocity and 
+\begin_inset Formula $h_{0}$
+\end_inset
+
+ is the minimum height.
+\end_layout
+
+\begin_layout Enumerate
+
+Run the A- and C-grid versions of the shallow-water code. The errors for this case can easily be calculated by comparing the initial and final conditions since the initial conditions are the analytic solution. Calculate and plot the errors after running for 1 day. 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+%With reference to your answer to question 3 of the first practical (on numerical differentiation), explain 
+\end_layout
+
+\begin_layout Standard
+
+
+\end_layout
+
+\end_inset
+
+Why the C-grid results are more accurate than the A-grid results? 
+\end_layout
+
+\begin_layout Enumerate
+
+Add a mountain defined by: 
+\begin_inset Formula \begin{equation*}
+h_0 = \begin{cases}
+h_{0\max}(1-\sqrt{(x-x_c)^2 + (y-y_c)^2}/r_m) &
+\text{ for } \sqrt{(x-x_c)^2 + (y-y_c)^2} < r_m\\
+0 & \text{ otherwise}
+\end{cases}
+\end{equation*}
+\end_inset
+
+where 
+\begin_inset Formula $(x_c,y_c)$
+\end_inset
+
+ is the mountain centre which is in the middle of the domain, 
+\begin_inset Formula $r_m=5\times10^5\text{m}$
+\end_inset
+
+ is the mountain radius and 
+\begin_inset Formula $h_{0\max}=500\text{m}$
+\end_inset
+
+ is the mountain peak height. You will need to add the definition of the mountain to function 
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+createMountain
+\end_layout
+
+\end_inset
+
+ in file 
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+pythonExamples/SWE/initialAndPlot.py
+\end_layout
+
+\end_inset
+
+ and include the influence of the orography in the correct terms of the SWE in functions 
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+SWECgrid
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+SWEAgrid
+\end_layout
+
+\end_inset
+
+ in file 
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+pythonExamples/SWE/ACgrids.py
+\end_layout
+
+\end_inset
+
+. Plot the results for both schemes after 10 days. Can you explain the problems with the A-grid results?
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+
+
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\series bold
+Additional things to try
+\family default
+\series default
+\shape default
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+Run for longer. Does the wave generated by the mountain become clearer? What else do you notice about the results.
+\end_layout
+
+\begin_layout Enumerate
+
+Make the mountain one grid-box wide.
+\end_layout
+
+\begin_layout Enumerate
+
+Make the jet faster. Can you initiate any barotropic instability?
+\end_layout
+
+\begin_layout Enumerate
+
+Implement a B-grid.
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+
+Lessons from the practical
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

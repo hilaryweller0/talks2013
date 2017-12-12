@@ -1,0 +1,38 @@
+\begin{frame}
+\frametitle{Numerical Requirements (and Mimetic Properties)}
+\pause
+\begin{itemize}
+\item Quasi-uniform tessellation of the sphere (not lat-lon) \pause
+\item Approaching 2nd order accuracy \pause
+\item Inherent conservation of tracers (and mass) \pause
+\item Approaching energy conservation \pause
+\item Accurate wave dispersion
+    \begin{list}{$\Rightarrow$}
+    \item C-grid (staggered grid) rather than A-grid (co-located)\pause
+    
+        \only<7-8>{\begin{tabular}{cc}
+        A-grid & C-grid \\
+        \only<7>{\input{figs/Arakawa/A.pdf_t}}
+        \only<8>{\animategraphics[width=0.3\linewidth]{5}
+        {../../../2011/climateSummerSchool/HilaryNotes/2dSWE/Agrid}{0}{9}}
+        &
+        \only<7>{\input{figs/Arakawa/C.pdf_t}}
+        \only<8>{\animategraphics[width=0.3\linewidth]{5}
+        {../../../2011/climateSummerSchool/HilaryNotes/2dSWE/Cgrid}{0}{9}}
+        \end{tabular}}
+        
+    \only<8>{\footnotesize\hspace{-1.1cm} (Solution of the linearised shallow-water equations starting from an initial bump)}
+
+    \end{list}\pause\pause
+    \item Charney-Phillips staggering in the vertical (pressure and density staggered to avoid spurious hydrostatic balance)\pause
+    \item Curl free gradients\pause
+    
+    \item Exact numerical solutions for geostropically balanced flow $2\Omega\times\mathbf{u}=-g\nabla h$\pause
+    \item Accurate implied advection of potential vorticity\pause
+    \item Large Courant number in the vertical\pause
+    \item<only@14> Control of or lack of spurious computational modes
+\end{itemize}
+
+
+\end{frame}
+

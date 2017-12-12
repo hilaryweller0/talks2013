@@ -1,0 +1,111 @@
+\begin{frame}
+\frametitle{Solid Body Rotation Errors after 5 days -- Asymmetric $H$}
+
+\begin{minipage}{0.32\linewidth}\centering
+Hexagonal \\ 2,562 cells\\10,242 dofs\\
+\includegraphics[width=1.6\linewidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_HRbucky_5_save_dt1800_asymmetricH_CLUSTPV_CLUSTh_432000_hUdiff.png}
+\end{minipage}
+\only<2-3>{
+\begin{minipage}{0.32\linewidth}\centering
+Cubed sphere\\
+3,456 cells\\
+10,368 dofs\\
+\includegraphics[width=1.6\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_cube_24x24_eq_save_dt1800_asymmetricH_CLUSTPV_CLUSTh_432000_hUdiff}
+\end{minipage}}
+\only<3>{
+\begin{minipage}{0.32\linewidth}\centering
+Diamond grid \\
+3,468 cells\\
+10,404 dofs
+\includegraphics[width=1.6\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_diamondCube_17x17_eq_save_dt1800_asymmetricH_CLUSTPV_CLUSTh_432000_hUdiff}
+\end{minipage}
+}
+\includegraphics[width=0.8\linewidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_HRbucky_legends_hUdiff_hDiff}m
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Solid Body Rotation Errors after 5 days -- Symmetric $H$}
+
+\begin{minipage}{0.32\linewidth}\centering
+Hexagonal \\ 2,562 cells\\10,242 dofs\\
+\includegraphics[width=1.6\linewidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_HRbucky_5_save_dt1800_DubosH_CLUSTPV_CLUSTh_432000_hUdiff.png}
+\end{minipage}
+\begin{minipage}{0.32\linewidth}\centering
+Cubed sphere\\
+3,456 cells\\
+10,368 dofs\\
+\includegraphics[width=1.6\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_cube_24x24_eq_save_dt1800_DubosH_CLUSTPV_CLUSTh_432000_hUdiff}
+\end{minipage}
+\begin{minipage}{0.32\linewidth}\centering
+Diamond grid \\
+3,468 cells\\
+10,404 dofs
+\includegraphics[width=1.6\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_diamondCube_17x17_eq_save_dt1800_DubosH_CLUSTPV_CLUSTh_432000_hUdiff}
+\end{minipage}
+
+\includegraphics[width=0.8\linewidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliSteady_HRbucky_legends_hUdiff_hDiff}m
+\end{frame}
+
+\begin{frame}
+\frametitle{Flow over a mid-latitude mountain}
+\framesubtitle{Diamond Grid, asymmetric $H$, relative vorticity}
+
+\animategraphics[width=\textwidth,palindrome]{20}
+{\RUNWM/WilliMountain/diamondCube/48x48_eq/save/dt225_asymmetricH_CLUSTPV_CLUSTh_2/animation/lowRes/vorticity}{0}{100}\\
+\includegraphics[width=\textwidth]
+{\RUNWM/WilliMountain/diamondCube/48x48_eq/save/dt225_asymmetricH_CLUSTPV_CLUSTh_2/legends/vorticity.pdf}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Flow over a mid-latitude mountain -- Asymmetric $H$}
+\framesubtitle{Geopotential height errors as a function of resolution}
+
+\begin{tabular}{cc}
+RMS error ($\ell_2(h)$) & Max error ($\ell_\infty(h)$) \\
+\includegraphics[width=0.48\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliMountain_comparePlots_l2h_dofs_asymmetricH_CLUSTPV_CLUSTh.pdf}
+&
+\includegraphics[width=0.48\textwidth]
+{\HOME/latex/myPapers/nonorthTrisk/graphics/WilliMountain_comparePlots_lih_dofs_asymmetricH_CLUSTPV_CLUSTh.pdf}
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\frametitle{\cite{GSP04} unstable jet \normalsize --
+Relative vorticity after 6 days}
+\renewcommand{\arraystretch}{0}
+\begin{tabular}{ccc}
+&&\multirow{5}{*}{
+\includegraphics[height=0.8\textheight]
+{links/baroJet+HRbucky+legends+vorticity_v.png}}
+\\
+\rotatebox{90}{\small Reference} &
+\includegraphics[width=0.8\linewidth]
+{links/baroJet+HRbucky+8+ref+518400+vorticity.png}
+\\
+\rotatebox{90}{\small Hexagonal} &
+\includegraphics[width=0.8\linewidth]
+{links/baroJet+HRbucky+8+save+dt300_asymmetricH_CLUSTPV_CLUSTh+518400+vorticity.png}
+\\
+\rotatebox{90}{\small Cubed} &
+\includegraphics[width=0.8\linewidth]
+{links/baroJet+cube+288x288_eq+save+dt100_asymmetricH_CLUSTPV_CLUSTh+518400+vorticity.png}
+\\
+\rotatebox{90}{\small Diamond} &
+\includegraphics[width=0.8\linewidth]
+{links/baroJet+diamondCube+144x144_eq+save+dt120_asymmetricH_CLUSTPV_CLUSTh+518400+vorticity.png}
+\end{tabular}
+\end{frame}
+
+

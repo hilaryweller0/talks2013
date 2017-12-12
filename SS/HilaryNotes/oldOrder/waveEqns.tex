@@ -1,0 +1,201 @@
+\chapter{Modelling Wave Equations}
+
+The two-dimensional non-linear shallow-water equations (with rotation) are:
+
+\begin{minipage}{0.68\linewidth}
+\begin{align}
+\frac{\partial h\mathbf{u}}{\partial t} + \nabla\cdot(\mathbf{u}h\mathbf{u} )&= 
+-2h\Omega\times\mathbf{u} - gh \nabla (h+h_0) \label{eqn:SWEuv}\\
+\frac{\partial h}{\partial t} & + \nabla\cdot(\mathbf{u}h) = 0 \label{eqn:SWEh}
+\end{align}
+\end{minipage}
+\hfill
+\begin{minipage}{0.3\linewidth}
+\input{figs/shallowWater.pdf_t}
+\end{minipage}
+
+where $g$ is the gravitational constant, $h$ is the water depth, $h_0$ is the height of the bottom topography and $\mathbf{u}$ is the water velocity in the $(x,y)$ direction (uniform with height) and $\Omega$ is the rotation vector (in the $z$ direction). 
+
+\section{Analytic Solultion}
+
+The one-dimensional version can be linearised and, ignoring rotation and topography, we get:\\
+\begin{minipage}{0.49\linewidth}\centering
+\begin{equation}
+\frac{\partial u}{\partial t} = -g \frac{\partial h}{\partial x}
+\label{eqn:SWEu}
+\end{equation}
+\end{minipage}
+\begin{minipage}{0.49\linewidth}\centering
+\begin{equation}
+\frac{\partial h}{\partial t} = -H \frac{\partial u}{\partial x}
+\label{eqn:SWEH}
+\end{equation}
+\end{minipage}\\
+where $H$ is the mean water depth and $h$ is the depth anomaly.
+
+These can be converted into wave equations of one variable by taking $\partial/\partial x$ of (\ref{eqn:SWEu}) and $\partial/\partial t$ of (\ref{eqn:SWEH}) and eliminating either $h$ or $u$. Eliminating $u$ gives the wave equation:
+\begin{equation}
+\opttext{
+\frac{\partial^2 h}{\partial t^2} + gH \frac{\partial^2 h}{\partial x^2} =0}
+\label{eqn:waveh}
+\end{equation}
+This can be solved to find wave solutions for $h$:
+\begin{align}
+h &= \mathbb{H}~ e^{ik(x ~\pm~ t\sqrt{gH})} = \mathbb{H}~ e^{ikx}~ e^{~\pm~ ikt\sqrt{gH}}
+\end{align}
+So waves with wavenumber $k$ in space oscillate with frequency $k\sqrt{gH}$ in time and $\sqrt{gH}$ is the speed for waves of all wavelengths (the waves are non-dispersive).	
+
+\section{Unstaggered Forward-Backward}
+
+As there are two equations that depend on each other, it is quite natural to solve them using forward-backward time-stepping. We will also start by assuming that $h$ and $u$ are defined at the same spatial positions (this is called co-located, unstaggered or A-grid):
+\begin{align}
+\frac{\partial u}{\partial t} &= -g \frac{\partial h}{\partial x}
+~~\rightarrow&
+\frac{u_j^{(n+1)} - u_j^{(n)}}{\Delta t} &= -\frac{g}{2\Delta x}\bigl(h_{j+1}^{(n)} - h_{j-1}^{(n)} \bigr)
+\label{eqn:SWEuFBA}\\
+\frac{\partial h}{\partial t} &= -H \frac{\partial u}{\partial x}
+~~\rightarrow&
+\frac{h_j^{(n+1)} - h_j^{(n)}}{\Delta t} &= -\frac{H}{2\Delta x}\bigl(u_{j+1}^{(n+1)} - u_{j-1}^{(n+1)} \bigr) 
+\label{eqn:SWEhFBA}
+\end{align}
+where $x_j=j \Delta x$, $t^{(n)} = n\Delta t$, $h_j^{(n)}=h(x_j,t^{(n)})$ and $u_j^{(n)}=u(x_j,t^{(n)})$.
+
+\subsection{Von-Neumann Stability Analysis}
+
+To calculate an amplification factor, $A$, for each wavenumber, $k$, we assume wave-like solutions for $h$ and $u$:
+\begin{align}
+h_j^{(n)} &= \mathbb{H}~ A^n~ e^{ikj\Delta x}\\
+u_j^{(n)} &= \mathbb{U}~ A^n~ e^{ikj\Delta x}
+\end{align}
+Substituting these into (\ref{eqn:SWEuFBA}) and (\ref{eqn:SWEhFBA}) leads (after eliminating $\mathbb{H}$ and $\mathbb{U}$ and after a LOT of manipulation which you need not reproduce) to:
+\begin{equation}
+A = 1 - \frac{c^2}{2}\sin^2 k\Delta x \pm \frac{ic}{2}\sin k\Delta x \sqrt{4 - c^2 \sin^2 k\Delta x}
+\end{equation}
+where the Courant number is now $c=\frac{\sqrt{gH}\Delta t}{\Delta x}$. There are two solutions for $A$ but this is OK because there are also two analytic solutions to the equations (because of the $\pm$ in the analytic solution). For $|c|\le 2$ this gives $|A|^2=1$ so the scheme is stable and undamping for sufficiently small time steps. However for $|c|>2$ we have:
+\begin{equation*}
+|A|^2 = \biggl(
+1 - \frac{c^2}{2}\sin^2 k\Delta x \pm \frac{c}{2}\sin k\Delta x \sqrt{c^2 \sin^2 k\Delta x - 4}\biggr)^2
+\end{equation*}
+which can be greater than 1 and so the scheme is unstable for $|c|>2$.
+
+The argument of the complex amplification factor, $A$, gives us the wave frequency as a function of wavenumber:
+\begin{equation}
+\omega = \tan^{-1}\frac{\frac{c}{2}\sin k\Delta x \sqrt{4 - c^2 \sin^2 k\Delta x}}{1 - \frac{c^2}{2}\sin^2 k\Delta x}
+\end{equation}
+\begin{minipage}{0.5\linewidth}
+This can be simplified by assuming that $\frac{c}{2}\sin k\Delta x = \sin\alpha$ to give:
+\begin{equation}
+\omega = \pm 2\alpha = \pm 2\sin^{-1}\bigl(\frac{c}{2}\sin k\Delta x\bigr)
+\end{equation}
+$\omega$ as a function of $k\Delta x$  compared with the analytic wave frequency ($k\sqrt{gH}/c$) $\rightarrow$
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\linewidth}
+\bf Wave dispersion-relation for the A-grid\\
+\includegraphics[width=\linewidth]{figs/A_dispersion.pdf}
+\end{minipage}
+Grid-scale waves ($k\Delta x/\pi=1$) have zero frequency! This is highly unrealistic.
+
+\section{Problems with Arakawa A-grid}
+
+\begin{minipage}{0.49\linewidth}\raggedright
+Having velocity at the same location as height is called the Arakawa A-grid. There is a big problem. Rather than propagating with speed $\sqrt{gH}$, waves with wavelength $2\Delta x$ are stationary. This is because the gradients of both $h$ and $u$ are needed at position $j$. If there is a grid-scale oscillation, these gradients can wrongly be zero. Therefore the wave cannot change. This is a spurious computational mode.
+\vspace{0.6in}
+
+A related problems is that if a single point is moved by external forcing with a slowly oscillating frequency, with an A-grid, a grid-scale oscillation will be generated whereas the correct solution is a large-scale wave. This is the parasitic mode:
+
+\end{minipage}
+\hfill
+\begin{minipage}{0.49\linewidth}\raggedright
+\optparagraph{
+This height distribution has zero gradient and will therefore not produce any velocity and so nothing will change\\
+\centerline{
+\includegraphics[width=0.6\linewidth]{figs/AgridMode.pdf}}}
+\vspace{0.1in}
+\href{http://www.met.reading.ac.uk/~sws02hs/inProgress/parasite.gif}
+{\includegraphics[width=\linewidth]
+{/home/hilary/papers/Thuburn/compModesTalk2012/parasite265.png}}
+\end{minipage}
+
+\section{Staggered Forward-Backward (C-grid)}
+
+So that gradients of $h$ can be calculated where $u$ is located and gradients of $u$ can be calculated where $h$ is located, $h$ and $u$ can be staggered in space:
+
+\ \\
+
+\optparagraph{\centering\input{figs/C-grid.pdf_t}}
+
+\vspace{1cm}
+Using centered, 2-point spatial differences and forward-backward in time gives:
+\begin{align}
+\frac{\partial u}{\partial t} &= -g \frac{\partial h}{\partial x}
+~~\rightarrow&
+\frac{u_{j+\half}^{(n+1)} - u_{j+\half}^{(n)}}{\Delta t} &= -\frac{g}{\Delta x}\bigl(h_{j+1}^{(n)} - h_{j}^{(n)} \bigr)
+\label{eqn:SWEuFBC}\\
+\frac{\partial h}{\partial t} &= -H \frac{\partial u}{\partial x}
+~~\rightarrow&
+\frac{h_j^{(n+1)} - h_j^{(n)}}{\Delta t} &= -\frac{H}{\Delta x}\bigl(u_{j+\half}^{(n+1)} - u_{j-\half}^{(n+1)} \bigr) 
+\label{eqn:SWEhFBC}
+\end{align}
+
+The Von-Neumann stability analysis now gives:
+\begin{equation}
+A = 1 - 2c^2\sin^2 \frac{k\Delta x}{2} ~\pm~ i~2c\sin \frac{k\Delta x}{2} \sqrt{1 - c^2 \sin^2 \frac{k\Delta x}{2}}
+\end{equation}
+Which gives $|A|=1$ for $|c|\le1$ but can give $|A|>1$ for $|c|>1$. Using $\sin\alpha=c\sin\frac{k\Delta x}{2}$ gives the frequency as a function of wave number (dispersion relation):
+\begin{equation}
+\omega = \pm 2\alpha = \pm 2\sin^{-1}\bigl(c\sin \frac{k\Delta x}{2}\bigr)
+\end{equation}
+
+\clearpage
+\begin{minipage}{0.49\linewidth}\centering\bf
+Wave dispersion relations for the Arakawa A- and C-grids\\
+\includegraphics[width=\linewidth]{figs/AC_dispersion.pdf}
+\end{minipage}
+\hfill
+\begin{minipage}{0.49\linewidth}\centering\bf
+Result of slowly oscillating a single point\\
+\href{http://www.met.reading.ac.uk/~sws02hs/inProgress/parasite.gif}
+{\includegraphics[width=\linewidth]
+{/home/hilary/papers/Thuburn/compModesTalk2012/parasite265.png}}
+\end{minipage}
+
+Therefore the C-grid is widely used in models of the atmosphere and ocean.
+
+\clearpage
+\section{Arakawa Grids}
+
+In two dimensions, there are more possibilities for where the prognostic variables are located:
+
+\begin{tabular}{ccc}
+A-grid & B-grid & C-grid \\
+\input{figs/Arakawa/A.pdf_t}&
+\input{figs/Arakawa/B.pdf_t}&
+\input{figs/Arakawa/C.pdf_t}\\
+D-grid & E-grid&\\
+\input{figs/Arakawa/D.pdf_t}&
+\input{figs/Arakawa/E.pdf_t}&
+\end{tabular}
+
+\section{Linearised Shallow-Water Equations on Arakawa Grids}
+
+\begin{align*}
+\frac{\partial \mathbf{u}}{\partial t} &= 
+-2\Omega\times\mathbf{u} - g \nabla h \\
+\frac{\partial h}{\partial t} & + H\nabla\cdot(\mathbf{u}) = 0
+\end{align*}
+
+
+\begin{tabular}{ccc}
+A-grid & B-grid & C-grid \\
+\animategraphics[width=0.3\linewidth]{5}
+{../../../2011/climateSummerSchool/HilaryNotes/2dSWE/Agrid}{0}{9}
+&
+\animategraphics[width=0.3\linewidth]{5}
+{../../../2011/climateSummerSchool/HilaryNotes/2dSWE/Bgrid}{0}{9}
+&
+\animategraphics[width=0.3\linewidth]{5}
+{../../../2011/climateSummerSchool/HilaryNotes/2dSWE/Cgrid}{0}{9}
+\\
+\end{tabular}
+

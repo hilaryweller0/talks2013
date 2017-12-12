@@ -1,0 +1,149 @@
+\chapter{Taylor Series and Numerical Approximations}
+
+\section{Taylor Series}
+
+A Taylor series gives an approximation of a function, $f$, at a position $x+\Delta x$, close to a known point, $x$, in terms of derivatives at $x$:
+\begin{equation}
+f(x+\Delta x) = f(x) + \Delta x f^\prime(x) + \frac{\Delta x^2}{2!} f^{\prime\prime}(x) + \frac{\Delta x^3}{3!} f^{\prime\prime\prime}(x) + \cdots
++ \frac{\Delta x^j}{j!} f^{(j)}(x) + \cdots
+\label{eqn:Taylor}
+\end{equation}
+where $f^\prime(x) = \frac{df}{dx}(x)$, $f^{\prime\prime}(x) = \frac{d^2f}{dx^2}(x)$. If infinitely many terms are used then this approximation is exact. However if all terms of order $n$ are discarded then the error is approximately proportional to $\Delta x^n$ (assuming that $\Delta x$ is small) and the approximation is said to be $n^{th}$ order accurate. For example if we do not evaluate any of the terms in $\Delta x^3$ and higher then the approximation and error are:
+\begin{equation}
+f(x+\Delta x) \approx f(x) + \Delta x f^\prime(x) + \frac{\Delta x^2}{2!} f^{\prime\prime}(x) + O(\Delta x^3)
+\label{eqn:Taylor3}
+\end{equation}
+The $+ O(\Delta x^3)$ terms means ``of order 3'' and means that the error, $\varepsilon$, is proportional to $\Delta x^3$, which becomes small very rapidly as $\Delta x$ decreases. 
+
+\subsection{Exercise}
+
+\begin{enumerate}
+\item Write the third order approximation for $f(x-\Delta x)$ in terms of $f(x)$, $f^\prime(x)$ and $f^{\prime\prime}(x)$.
+\optparagraph{
+\begin{equation}
+f(x-\Delta x) \approx f(x) - \Delta x f^\prime(x) + \frac{\Delta x^2}{2!} f^{\prime\prime}(x) + O(\Delta x^3)
+\end{equation}}
+
+\item Write the third order approximation for $f(x+\Delta x)$ in terms of $f(x-\Delta x)$, $f^\prime(x-\Delta x)$ and $f^{\prime\prime}(x-\Delta x)$.
+\optparagraph{
+\begin{equation}
+f(x+\Delta x) \approx f(x-\Delta x) + 2\Delta x f^\prime(x-\Delta x) + 2\Delta x^2 f^{\prime\prime}(x-\Delta x) + O(\Delta x^3)
+\end{equation}}
+\end{enumerate}
+
+\clearpage
+\section{Numerical Differentiation}
+\label{Taylor:diffIntro}
+
+Consider a set of points, $x_0, x_1, \cdots x_j,\cdots x_n$ where $x_j = j\Delta x$ (the points are distance $\Delta x$ apart). Assume that we know the value of the function $f(x)$ at these points, as shown in figure \ref{fig:fx}.
+%\afterpage{\clearpage
+\begin{figure}[H]\begin{center}
+\includegraphics[scale=0.45]{figs/fx.pdf}
+\caption{Values of a function $f$ at points $x_0,~x_1,\cdots,x_j,\cdots$.} 
+\label{fig:fx}
+\end{center}\end{figure}%}
+Some possible estimate of $f^\prime_j=f^\prime(x_j)$ are:\\
+\centerline{\begin{tabular}{ccc}
+forward difference & backward difference & centred difference \\
+\opttext{$f^{\prime}_j \approx \frac{f_{j+1} - f_{j}}{\Delta x}$}
+&
+\opttext{$f^{\prime}_j \approx \frac{f_{j} - f_{j-1}}{\Delta x}$}
+&
+\opttext{$f^{\prime}_j \approx \frac{f_{j+1} - f_{j-1}}{2\Delta x}$}
+\end{tabular}}
+
+Taylor series can be used to derive estimates of derivatives and to find their order of accuracy.
+
+\section{Taylor Series to find Finite Difference Gradients}
+\label{Taylor:diff}
+
+In order to use a Taylor series (below) to find an approximation for $f^\prime$
+\begin{equation}
+f(x+\Delta x) = f(x) + \Delta x f^\prime(x) + \frac{\Delta x^2}{2!} f^{\prime\prime}(x) + \frac{\Delta x^3}{3!} f^{\prime\prime\prime}(x) + \cdots
++ \frac{\Delta x^j}{j!} f^{(j)}(x) + \cdots
+\label{eqn:Taylor2}
+\end{equation}%\vspace{-5pt}
+\begin{enumerate}
+\item write down the knowns
+\item consider {\em where} we want to find $f^\prime$
+\item consider what order of accuracy we want
+\item write down Taylor series for some of the knowns
+\item eliminate the additional unknowns to find $f^\prime$
+\end{enumerate}
+
+\subsection{Example}
+
+\begin{enumerate}
+\item Assume that we know \begin{minipage}[t]{0.35\linewidth}
+$f_j=f(x_j)$\\
+$f_{j-1}=f(x_{j-1})=f(x-\Delta x)$\\
+$f_{j+1}=f(x_{j+1})=f(x+\Delta x)$
+\end{minipage}
+\item and we want to find $f^\prime_j$.
+\item For 3 knowns we wonder if we can get second order accuracy
+\item We do not want to generate too many unknowns. We don't know $f^\prime_{j-1}$ or $f^\prime_{j+1}$ so no Taylor series about $x_{j-1}$ or $x_{j+1}$. So let's try Taylor series for $f_{j+1}$ and $f_{j-1}$ about $x_j$
+\[
+f_{j+1} = \opttext{f_j + \Delta x f^\prime_j + \frac{\Delta x^2}{2!} f^{\prime\prime}_j + \frac{\Delta x^3}{3!}f^{\prime\prime\prime}} \hspace{4cm} + O(\Delta x^4)
+\]
+\[
+f_{j-1} = \opttext{f_j - \Delta x f^\prime_j + \frac{\Delta x^2}{2!} f^{\prime\prime}_j - \frac{\Delta x^3}{3!}f^{\prime\prime\prime} } \hspace{4cm} +O(\Delta x^4)
+\]
+\item Eliminate $f^{\prime\prime}_j$ by taking the difference of the two equations\\
+\[
+f_{j+1} - f_{j-1} = \opttext{2\Delta x f^\prime_j + \frac{\Delta x^3}{3}f^{\prime\prime\prime}_j} \hspace{4cm} + O(\Delta x^4)
+\]
+Rearrange to get $f^\prime_j$
+\[
+f^\prime_j = \opttext{\frac{f_{j+1} - f_{j-1}}{2\Delta x} + \frac{\Delta x^2}{3!}f^{\prime\prime\prime}_j }+ O(\Delta x^3)
+\]
+We cannot elliminate $f^{\prime\prime\prime}_j$ so this is part of the error:
+\[
+f^\prime_j = \frac{f_{j+1} - f_{j-1}}{2\Delta x} + O(\Delta x^2)
+\]
+The error, $\varepsilon$, is proportional to $\Delta x^2$ ($\varepsilon \propto \Delta x^2$) so this approximation is second order accurate.
+\end{enumerate}
+
+\subsection{Exercise}
+
+Use the Taylor series to find an approximation for $f^\prime_j$ in terms of $f_j$ and $f_{j-1}$. What order accuracy is it?
+
+\opttext{
+$f_{j-1} = f_j - \Delta x f_j^\prime + \frac{\Delta x^2}{2!} f_j^{\prime\prime}
++ O(\Delta x^3)
+$
+\\
+$\implies f_j^\prime = \frac{f_j - f_{j-1}}{\Delta x} + \frac{\Delta x}{2!} f_j^{\prime\prime} + O(\Delta x^2)$
+}
+
+
+\clearpage
+\section{Interpolation}
+\label{secn:interp}
+
+Interpolation of values from known points onto unknown points is an essential tool for numerical modelling. If the value of $f$ is known at points $x_1$ and $x_2$ (values $f_1$ and $f_2$) and we want to estimate the value of $f$ at point $x_i$ in between $x_1$ and $x_2$ then we can use linear interpolation (fig. \ref{fig:linInterp} (ie we assume that $f_i$ lies on a straight line between $f_1$ and $f_2$):
+\begin{figure}[H]\raggedright
+\begin{minipage}{0.49\linewidth}
+\includegraphics[width=\linewidth]{figs/linInterp.pdf}
+\end{minipage}
+\hspace{0.05\linewidth}
+\begin{minipage}{0.44\linewidth}\raggedright
+Gradient $=$ \opttext{$\frac{f_2-f_1}{x_2-x_1}$} \\
+$\implies f_i = f_1 + $ \opttext{$\beta\Delta x \frac{f_2-f_1}{x_2-x_1}$} \\
+where $\Delta x = x_2-x_1$, $\beta=\opttext{\frac{x_i-x_1}{x_2-x_1}}$\\ \ \\
+$\implies f_i = (1-\beta)f_1 + \beta f_2$\\
+\end{minipage}
+\caption{Linear interpolation of $f$ between $x_1$ and $x_2$.} 
+\label{fig:linInterp}
+\end{figure}
+\begin{itemize}
+\item If $f$ is known at $n$ points then a polynomial of degree $n-1$ can be fit to estimate $f$ at another point
+\end{itemize}
+Eg. Cubic Lagrange interpolation for constant grid spacing, $\Delta x$:
+\begin{align}
+\hat{f}(x)= -& \frac{1}{6}\beta(1-\beta)(2-\beta)f_{k-1}
+             + \frac{1}{2}(1+\beta)(1-\beta)(2-\beta)f_k \nonumber\\
+            +& \frac{1}{2}(1+\beta)\beta(2-\beta)f_{k+1}
+             - \frac{1}{6}(1+\beta)\beta(1-\beta)f_{k+2}
+\label{eqn:LagrangeInterp3}
+\end{align}
+

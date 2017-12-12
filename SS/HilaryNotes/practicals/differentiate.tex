@@ -1,0 +1,44 @@
+\subsection{Practical: Numerical Differentiation}
+
+Write your answers on this piece of paper.
+
+We will be evaluating the wind, $u$, from the pressure, $p$, at some fixed locations by numerically differentiating the geostrophic wind relation:
+\begin{equation*}
+u = -\frac{1}{\rho f}\frac{dp}{dy}.
+\end{equation*}
+The pressure, $p$, is given by the formula:
+\begin{equation*}
+p = p_0 + p^\prime \cos\frac{y\pi}{L}
+\end{equation*}
+where $p_0=10^5 Pa$, $p^\prime=200 Pa$, $f = 10^{-4}s^{-1}$, $\rho=1 kg m^{-3}$, $L = 2\times 10^6 m$ and $y:0\rightarrow 10^6 m$.
+
+The code \url{pythonExamples/differentiate.py} evaluates the wind, $u$, at the same locations as the pressure is given using the centred, 2nd order finite different formula:
+\[
+\frac{dp}{dy}(y_j) = p^\prime_j = \frac{p_{j+1} - p_{j-1}}{2 \Delta y}
+\]
+in the mid-points and using the forward and backward differences at the end-points:
+\begin{center}\begin{tabular}{cc}
+$p^\prime_j = \frac{p_{j+1} - p_{j}}{\Delta y}$
+&
+$p^\prime_j = \frac{p_{j} - p_{j-1}}{\Delta y}$.
+\end{tabular}\end{center}
+
+\begin{enumerate}
+\item Run \url{pythonExamples/differentiate.py} and examine the plot of numerical error as a function of $y$. Why is the error higher at the end-points?\\
+\optparagraph{Because the forward and backward difference approximations are only first-order accurate}
+
+\item Improve the calculation of the end-points by implementing 2nd-order forward and backward finite difference formulae:
+\begin{center}\begin{tabular}{cc}
+forward & backward \\
+$p^\prime_j = \frac{-3p_{j} + 4p_{j+1} - p_{j+2}}{2\Delta y}$
+&
+$p^\prime_j = \frac{p_{j-2} - 4p_{j-1} + 3p_{j}}{2\Delta y}$.
+\end{tabular}\end{center}
+By how much has this reduced the errors at the end points?\\
+\optparagraph{Error reduced from $\approx$0.18m/s to $\approx$0.0024 at $y=0$. \\
+Error reduced from $\approx$-0.055m/s to $\approx$0.018m/s at $y=10^6 m$}
+
+\item Define a new array, $y_m$, with values of $y$ at the mid-points between the original values of $y$. Evaluate $u$ at these mid-points, $u_m$, using the original $p$ values. (You will have to use a different numerical approximation of the gradient). Plot the numerical approximation to $u_m$, the exact $u$ at $y_m$ and the error against $y_m$. How do the accuracy and computational cost compare with the previous errors (away from the mid-points)? Why?\\
+\optparagraph{The errors should be approximately 4 times smaller because the effective resolution is reduced a factor of two and both schemes are 2nd order accurate. This is for about the same computational cost.}
+
+\end{enumerate}

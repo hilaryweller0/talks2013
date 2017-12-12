@@ -1,0 +1,90 @@
+\usepackage{theorem,amsmath,amssymb,amscd}
+\usepackage[latin1]{inputenc}
+\usepackage{mathptmx}
+\usepackage[scaled=.92]{helvet}
+\usepackage{courier}
+\usepackage[T1]{fontenc}
+%\usepackage[english,german]{babel}
+%\usepackage[dvips]{pstricks}
+%\selectlanguage{english}
+
+
+\usepackage[a5paper, left=1.5cm, right=1.5cm,
+top=1.5cm, bottom=1.5cm]{geometry}
+
+\parskip0pt
+\parindent1em
+\pagestyle{empty}
+
+\newcommand\@authori{}
+\newcommand\@authorii{}
+\newcommand\@authoriii{}
+\newcommand\@authoriv{}
+\newcommand\@authorv{}
+\newcommand\@authorvi{}
+
+\newcounter{icount}
+\setcounter{icount}{1}
+\newcommand\makecmd[2]{%
+\expandafter\renewcommand\csname #1\roman{icount}\endcsname{#2}%
+}
+\newcommand\@@author[1]{\makecmd{@author}{#1}}
+\long\def\abstract#1{\long\gdef\@abstract{#1}}
+\newcommand\speaker{{ }}
+\newcommand\authorbreak{{}}
+\renewcommand\title[1]{\renewcommand\@title{#1}}
+\renewcommand\author[2]{
+  \@@author{\authorbreak\small{\it #1$^\speaker$}\,
+    \ifx#2\@empty\else({#2})\fi}
+  \stepcounter{icount}
+}
+\newcommand\coauthor[2]{\renewcommand\speaker{{\,\star}}
+  \@@author{\authorbreak\small{\it #1}\, 
+    \ifx#2\@empty\else({#2})\fi}
+  \stepcounter{icount}
+}
+
+
+\newdimen\bibindent
+\setlength\bibindent{1.5em}
+\renewenvironment{thebibliography}[1]
+     {\small
+      \list{\@biblabel{\@arabic\c@enumiv}}%
+           {\settowidth\labelwidth{\@biblabel{#1}}%
+            \leftmargin\labelwidth
+            \itemsep-2pt
+            \advance\leftmargin\labelsep
+            \@openbib@code
+            \usecounter{enumiv}%
+            \let\p@enumiv\@empty
+            \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+      \sfcode`\.\@m}
+     {\def\@noitemerr
+       {\@latex@warning{Empty `thebibliography' environment}}%
+      \endlist\normalsize}
+
+%\sloppy
+% \parskip0pt
+% \parindent3ex
+% \normalsize
+
+\def\maketitle{
+  {
+    \parindent0pt
+    {\raggedright\sloppy\bf\@title}
+    \vskip1pt
+    \@authori
+    \renewcommand\authorbreak{\\[-1pt]}
+    \@authorii
+    \@authoriii
+    \@authoriv
+    \@authorv
+    \@authorvi
+    \vskip4pt
+  }
+}
+

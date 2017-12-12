@@ -1,0 +1,45 @@
+\subsection{Practical: Gaussian Quadrature}
+
+Write your answers on this piece of paper
+
+\begin{enumerate}
+
+\item Run the Gaussian Quadrature code in \url{pythonExamples/GaussQuad.py}. For 40 intervals ($N=40$), what is the error in approximating the integral?
+\\ \optparagraph{0.000514134394606}
+
+\item Modify the code so that it writes out the error as a percentage. What is the percentage error? \\
+\optparagraph{-0.0257067197303\%}
+
+\item Change the code to evaluate $\int^\pi_0\sin mx\ dx$ for $m=3$. How does this affect the error? Why? \\
+\optparagraph{Error = 0.0015446264064, \%age error = 0.23169396096. The error is larger because the second derivative of the function is higher.}
+
+\item For $m=1$, calculate the error percentage for each of the values of $N$ below and write down $\Delta x$ and the errors in the table.
+
+\hfill
+\clearpage
+
+\begin{tabular}{l|c|c|c}
+Number of && Percentage   & Order of \\
+Intervals ($N$) & $\Delta x$ & Error  & Accuracy\\
+\hline\hline
+40 & \opttext{0.0785398163397} & \opttext{0.0257067197303} &  \\\hline
+400 & \opttext{0.00785398163397} & \opttext{0.000257021410355} & \opttext{2.0000773602784263}  \\ \hline
+4,000 & \opttext{0.000785398163397} & \opttext{2.57020948968e-06} & \opttext{2.0000007796151715}  \\ \hline
+40,000 & \opttext{7.85398163397e-05} & \opttext{2.57015742022e-08} & \opttext{2.0000087983910682}  \\ \hline
+400,000 & \opttext{7.85398163397e-06} & \opttext{2.58060239844e-10} & \opttext{1.9982386277830928}  \\ \hline
+4,000,000 & \opttext{7.85398163397e-07} & \opttext{9.68114477473e-12} & \opttext{1.425794381833549}  \\
+\end{tabular}
+
+\item The error of a numerical method can be characterised as:
+\[\varepsilon = a \Delta x^n\]
+where $n$ is the order of accuracy and $a$ is an arbitrary constant. For each of the changes in resolution above, can you calculate the order of accuracy and write it in the table. \\
+\optparagraph
+{
+    $n = \frac{\log \varepsilon_1/\varepsilon_2}{\log \Delta x_1/\Delta x_2}$
+}
+
+\item Why does the error reduce more slowly once we reach $n=4\times 10^6$?\\
+\optparagraph{This is a result of round-off error. The real numbers are stored with finite precision on the computer. Towards the end of the integration, very small numbers are being added to relatively large numbers. This is particularly subject to rounding error. For example, evaluate \url{1.0 + 1e-16} on the command line in python}.
+
+
+\end{enumerate}
